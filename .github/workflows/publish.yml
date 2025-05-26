@@ -1,0 +1,32 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  PublishPackage:
+    name: Publish @jaronline/blockenv
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Use Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        shell: bash
+        run: yarn install --immutable
+      - name: Publish to NPM
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
+          yarn npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
