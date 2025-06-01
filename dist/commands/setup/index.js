@@ -15,11 +15,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { Command } = require("commander");
 const { parseSide, parseLoader } = require("../../options");
 
 /**
- * @param {Command} program
+ * @param {import("../../lib").Program} program
  */
 module.exports.loadCommands = function(program) {
     program
@@ -31,19 +30,19 @@ module.exports.loadCommands = function(program) {
         .requiredOption("--loader-version <version>", "Specify the modloader version to use")
         .action(async (options) => {
             try {
-                await runSetup(options);
+                await runSetup(options, program.config());
             } catch (error) {
                 program.error(error.message);
             }
         });
 }
 
-async function runSetup(options) {
+async function runSetup(options, config) {
     const { side } = options;
     if (!side || side == "client") {
-        await require("./client").setupClient(options);
+        await require("./client").setupClient(options, config);
     }
     if (!side || side == "server") {
-        await require("./server").setupServer(options);
+        await require("./server").setupServer(options, config);
     }
 }

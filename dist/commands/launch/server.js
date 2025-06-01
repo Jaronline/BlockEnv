@@ -16,11 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { join } = require("node:path");
-const { getConfig } = require("../../config");
 const { runServer } = require("../../utils");
 
-module.exports.launchServer = async function(options) {
-    const { path, config } = getConfig();
+module.exports.launchServer = async function(options, configData) {
+    const { path, config } = configData;
     const envDir = join(path, config.baseDir);
     const installDir = join(envDir, "server");
     await runServer(installDir);

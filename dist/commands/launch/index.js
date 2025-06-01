@@ -15,11 +15,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { Command } = require("commander");
 const { parseSide } = require("../../options/side");
 
 /**
- * @param {Command} program
+ * @param {import("../../lib").Program} program
  */
 module.exports.loadCommands = function(program) {
     program
@@ -29,21 +28,21 @@ module.exports.loadCommands = function(program) {
         .option("-p, --profile <profile>", "The client profile to launch")
         .action(async (options) => {
             try {
-                await runLaunch(program.version(), options);
+                await runLaunch(program.version(), options, program.config());
             } catch (error) {
                 program.error(error.message);
             }
         });
 }
 
-async function runLaunch(version, options) {
+async function runLaunch(version, options, config) {
     const { side = "client" } = options;
     switch (side) {
         case "client":
-            await require("./client").launchClient(version, options);
+            await require("./client").launchClient(version, options, config);
             break;
         case "server":
-            await require("./server").launchServer(options);
+            await require("./server").launchServer(options, config);
             break;
     }
 }
