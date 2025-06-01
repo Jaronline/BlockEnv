@@ -1,3 +1,13 @@
 {
-    "baseDir": "env"
+    "baseDir": "env",
+    "environments": {
+        "client": {
+            "type": "client",
+            "path": "client"
+        },
+        "server": {
+            "type": "server",
+            "path": "server"
+        }
+    }
 }

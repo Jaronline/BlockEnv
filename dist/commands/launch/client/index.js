@@ -31,9 +31,11 @@ function getClasspathSeperator(osName) {
 
 module.exports.launchClient = async function(cliVersion, options, configData) {
     const { profile } = options;
+    const environment = options.environment ?? options.side;
     const { path, config } = configData;
+    const clientPath = config.environments[environment]?.path;
     const envDir = join(path, config.baseDir);
-    const installDir = join(envDir, "client");
+    const installDir = join(envDir, clientPath);
     const versionsDir = join(installDir, "versions");
     const libDir = join(installDir, "libraries");
     const assetsDir = join(installDir, "assets");

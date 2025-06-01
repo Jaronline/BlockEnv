@@ -15,7 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { parseSide } = require("../../options/side");
+const { Option } = require("commander");
+const { parseSide, parseEnvName } = require("../../options");
 
 /**
  * @param {import("../../lib").Program} program
@@ -24,7 +25,8 @@ module.exports.loadCommands = function(program) {
     program
         .command("launch")
         .description("Launch the Minecraft client or server")
-        .option("-s, --side <side>", "Whether to launch the server or client (default: client)", parseSide)
+        .addOption(new Option("-s, --side <side>", "Whether to launch the server or client (default: client)").argParser(parseSide))
+        .addOption(new Option("-e, --environment <environment>", "The environment to use for the launch").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .option("-p, --profile <profile>", "The client profile to launch")
         .action(async (options) => {
             try {
