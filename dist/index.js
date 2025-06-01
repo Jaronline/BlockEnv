@@ -16,18 +16,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { Command } = require("commander");
+const { Program, getConfig } = require("./lib");
 const { version } = require("../package.json");
 
-const program = new Command("blockenv")
+const program = new Program("blockenv")
     .description("a Minecraft modpack testing environment CLI")
     .version(version);
 
-require("./commands/clean").loadCommands(program);
-require("./commands/setup").loadCommands(program);
-require("./commands/launch").loadCommands(program);
-
 try {
+    program.config(getConfig());
+
+    require("./commands/clean").loadCommands(program);
+    require("./commands/setup").loadCommands(program);
+    require("./commands/launch").loadCommands(program);
+
     program.parse(process.argv);
 } catch (error) {
     program.error(error instanceof Error ? error.message : error);

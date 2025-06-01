@@ -15,15 +15,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { Command } = require("commander");
 const { parseSide } = require("../options/side");
-const { getConfig } = require("../config");
 const { join } = require("node:path");
 const { existsSync } = require("node:fs");
 const { rmrf } = require("../utils");
 
 /**
- * @param {Command} program
+ * @param {import("../lib").Program} program
  */
 module.exports.loadCommands = function(program) {
     program
@@ -32,16 +30,16 @@ module.exports.loadCommands = function(program) {
         .option("-s, --side <side>", "Whether to clean the server or client", parseSide)
         .action(async (options) => {
             try {
-                await runClean(options);
+                await runClean(options, program.config());
             } catch (error) {
                 program.error(error.message);
             }
         });
 }
 
-async function runClean(options) {
+async function runClean(options, configData) {
     const { side } = options;
-    const { path, config } = getConfig();
+    const { path, config } = configData;
     if (!side || side == "client")
         await cleanEnvironment("client", join(path, config.baseDir, "client"), [
             join("config", "*"),
