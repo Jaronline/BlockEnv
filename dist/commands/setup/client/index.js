@@ -15,7 +15,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { getConfig } = require("../../../config");
 const { detectOS, detectArch } = require("../../../utils");
 const { downloadManifest } = require("./manifest");
 const { downloadVersionMeta, downloadVersionJar } = require("./version");
@@ -26,9 +25,9 @@ const { downloadInstaller, runInstaller, cleanInstaller } = require("../installe
 const { join } = require("node:path");
 const { existsSync } = require("node:fs");
 
-module.exports.setupClient = async function(options) {
+module.exports.setupClient = async function(options, configData) {
     const { loaderVersion, minecraftVersion } = options;
-    const { path, config } = getConfig();
+    const { path, config } = configData;
     const envDir = join(path, config.baseDir);
     const installDir = join(envDir, "client");
     const versionsDir = join(installDir, "versions");

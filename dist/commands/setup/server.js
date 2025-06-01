@@ -15,15 +15,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { getConfig } = require("../../config");
 const { runServer } = require("../../utils");
 const { downloadInstaller, runInstaller, cleanInstaller } = require("./installer");
 const { existsSync } = require("node:fs");
 const { join } = require("node:path");
 
-module.exports.setupServer = async function(options) {
+module.exports.setupServer = async function(options, configData) {
     const { loaderVersion } = options;
-    const { path, config } = getConfig();
+    const { path, config } = configData;
     const envDir = join(path, config.baseDir);
     const installDir = join(envDir, "server");
 
