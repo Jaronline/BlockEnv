@@ -23,16 +23,16 @@
     "testing"
   ],
   "author": "Jaron Zijlstra",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "bugs": {
     "url": "https://github.com/Jaronline/BlockEnv/issues"
   },
   "homepage": "https://github.com/Jaronline/BlockEnv#readme",
-	"publishConfig": {
-		"provenance": true,
-		"access": "public",
-		"registry": "https://registry.yarnpkg.com"
-	},
+  "publishConfig": {
+    "provenance": true,
+    "access": "public",
+    "registry": "https://registry.yarnpkg.com"
+  },
   "packageManager": "yarn@4.9.1",
   "devDependencies": {
     "@types/node": "^22.15.29"
