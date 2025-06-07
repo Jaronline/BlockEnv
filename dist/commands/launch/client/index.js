@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { join } = require("node:path");
-const { detectOS, detectArch, spawnAsync } = require("../../../utils");
+const { detectOS, detectArch, spawnAsync, determineInstallPath } = require("../../../utils");
 const { getProfileVersion } = require("./profile");
 const { getMergedVersionJSON } = require("./version");
 const { getClasspath } = require("./classpath");
@@ -29,11 +29,9 @@ function getClasspathSeperator(osName) {
     return ":";
 }
 
-module.exports.launchClient = async function(cliVersion, options, configData) {
+module.exports.launchClient = async function(cliVersion, options, config) {
     const { profile } = options;
-    const { path, config } = configData;
-    const envDir = join(path, config.baseDir);
-    const installDir = join(envDir, "client");
+    const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
     const libDir = join(installDir, "libraries");
     const assetsDir = join(installDir, "assets");
