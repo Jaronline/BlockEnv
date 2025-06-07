@@ -15,7 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { parseSide, parseLoader } = require("../../options");
+const { parseSide, parseLoader, parseEnvName } = require("../../options");
+const { Option } = require("commander");
 
 /**
  * @param {import("../../lib").Program} program
@@ -25,6 +26,7 @@ module.exports.loadCommands = function(program) {
         .command("setup")
         .description("Setup the testing environment")
         .option("-s, --side <side>", "Whether to setup the server or client", parseSide)
+        .addOption(new Option("-e, --environment <environment>", "Which environment to setup").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .option("-m, --minecraft-version <version>", "Specify the Minecraft version to use")
         .requiredOption("-l, --loader <loader>", "Specify the modloader to use (currently only 'neoforge' is supported)", "neoforge", parseLoader)
         .requiredOption("--loader-version <version>", "Specify the modloader version to use")
@@ -37,12 +39,20 @@ module.exports.loadCommands = function(program) {
         });
 }
 
+const envTypeFiles = {
+    "client": "./client",
+    "server": "./server",
+};
+
 async function runSetup(options, config) {
-    const { side } = options;
+    const { side, environment } = options;
+    if (environment) {
+        return require(envTypeFiles[environment.type]).setup(options, config);
+    }
     if (!side || side == "client") {
-        await require("./client").setupClient(options, config);
+        await require("./client").setup(options, config);
     }
     if (!side || side == "server") {
-        await require("./server").setupServer(options, config);
+        await require("./server").setup(options, config);
     }
 }

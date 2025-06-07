@@ -21,4 +21,5 @@ module.exports = {
     spawnAsync: require("./spawn"),
     ...require("./os"),
     ...require("./server"),
+    ...require("./env"),
 };

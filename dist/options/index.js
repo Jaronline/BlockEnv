@@ -18,4 +18,5 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 module.exports = {
     parseLoader: require("./loader").parseLoader,
     parseSide: require("./side").parseSide,
+    ...require("./env"),
 };
