@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { Option } = require("commander");
-const { parseSide, parseEnvName } = require("../../options");
+const { parseSide, parseEnvName } = require("../../parsers");
 
 /**
  * @param {import("../../lib").Program} program
