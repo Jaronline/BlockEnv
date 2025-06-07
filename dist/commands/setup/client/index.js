@@ -22,14 +22,13 @@ const { downloadLibraries, extractNatives } = require("./libraries");
 const { downloadAssetsIndex, downloadAssets } = require("./assets");
 const { generateLauncherProfiles } = require("./profile");
 const { downloadInstaller, runInstaller, cleanInstaller } = require("../installer");
+const { determineInstallPath } = require("../../../utils");
 const { join } = require("node:path");
 const { existsSync } = require("node:fs");
 
-module.exports.setupClient = async function(options, configData) {
+module.exports.setup = async function(options, config) {
     const { loaderVersion, minecraftVersion } = options;
-    const { path, config } = configData;
-    const envDir = join(path, config.baseDir);
-    const installDir = join(envDir, "client");
+    const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
     const versionDir = join(versionsDir, minecraftVersion);
     const libDir = join(installDir, "libraries");

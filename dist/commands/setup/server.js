@@ -17,14 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { runServer } = require("../../utils");
 const { downloadInstaller, runInstaller, cleanInstaller } = require("./installer");
+const { determineInstallPath } = require("../../utils");
 const { existsSync } = require("node:fs");
 const { join } = require("node:path");
 
-module.exports.setupServer = async function(options, configData) {
+module.exports.setup = async function(options, config) {
     const { loaderVersion } = options;
-    const { path, config } = configData;
-    const envDir = join(path, config.baseDir);
-    const installDir = join(envDir, "server");
+    const installDir = determineInstallPath(options, config);
 
     if (!existsSync(join(installDir, "run.bat")) || !existsSync(join(installDir, "run.sh"))) {
         const tmpDir = await downloadInstaller({ loaderVersion });

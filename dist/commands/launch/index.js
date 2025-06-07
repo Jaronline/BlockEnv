@@ -38,8 +38,8 @@ module.exports.loadCommands = function(program) {
 }
 
 async function runLaunch(version, options, config) {
-    const { side = "client" } = options;
-    switch (side) {
+    const { side = "client", environment } = options;
+    switch (environment?.type ?? side) {
         case "client":
             await require("./client").launchClient(version, options, config);
             break;
