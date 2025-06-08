@@ -11,6 +11,7 @@
             "type": "object",
             "patternProperties": {
                 "^[a-zA-Z0-9_-]+$": {
+                    "description": "Configuration for a specific environment.",
                     "type": "object",
                     "properties": {
                         "name": {
