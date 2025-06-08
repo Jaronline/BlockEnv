@@ -41,7 +41,9 @@
                             "if": {
                                 "properties": {
                                     "type": {
-                                        "const": "server"
+                                        "not": {
+                                            "const": "client"
+                                        }
                                     }
                                 }
                             },

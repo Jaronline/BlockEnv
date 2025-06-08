@@ -16,8 +16,7 @@
         "server": {
             "name": "Server Environment",
             "type": "server",
-            "path": "server",
-            "playerName": "OfflinePlayer2"
+            "path": "server"
         },
         "server2": {
             "name": "Server Environment 2",
