@@ -35,6 +35,10 @@ module.exports.Environment = class Environment {
         return this.#data.path;
     }
 
+    get playerName(){
+        return this.#data.playerName;
+    }
+
     #validateData(data = this.#data) {
         if (!data || typeof data !== "object" || Array.isArray(data)) {
             throw new Error("Environment data must be an object.");
@@ -47,6 +51,28 @@ module.exports.Environment = class Environment {
         }
         if (!data.path || typeof data.path !== "string") {
             throw new Error("Environment path must be a string.");
+        }
+        this.#validatePlayerName();
+    }
+
+    #validatePlayerName(data = this.#data) {
+        if (!data.playerName) {
+            return;
+        }
+        if(data.type == "server"){
+            throw new Error("Environment playerName can not be set in a server type environment");
+        }
+        if(typeof data.playerName !== "string"){
+            throw new Error("Environment playerName must be a string.");
+        }
+        if (data.playerName.length === 0) {
+            throw new Error("Environment playerName cannot be empty.");
+        }
+        if (!/^[A-Za-z0-9_]+$/.test(data.playerName)) {
+            throw new Error("Environment playerName can only contain letters, numbers, and underscores.");
+        }
+        if (data.playerName.length > 16) {
+            throw new Error("Environment playerName is too long");
         }
     }
 }

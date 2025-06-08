@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 module.exports.subsitutePlaceholders = function(text,
     {
         version, classpath, loaderVersion, libDir, classpathSeparator,
@@ -22,6 +23,7 @@ module.exports.subsitutePlaceholders = function(text,
         authUUID = "00000000-0000-0000-0000-000000000000", accessToken = "none",
         userType = "legacy", versionType, gameDir
     }) {
+
     return text
         .replaceAll("${launcher_name}", "BlockEnv")
         .replaceAll("${launcher_version}", version)

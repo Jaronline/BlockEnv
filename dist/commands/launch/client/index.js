@@ -21,6 +21,7 @@ const { getProfileVersion } = require("./profile");
 const { getMergedVersionJSON } = require("./version");
 const { getClasspath } = require("./classpath");
 const { subsitutePlaceholders } = require("./placeholder");
+const { generateUUID } = require("./uuid")
 
 function getClasspathSeperator(osName) {
     if (osName === "windows") {
@@ -30,11 +31,13 @@ function getClasspathSeperator(osName) {
 }
 
 module.exports.launchClient = async function(cliVersion, options, config) {
-    const { profile } = options;
+    const { profile, environment } = options;
     const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
     const libDir = join(installDir, "libraries");
     const assetsDir = join(installDir, "assets");
+    const { playerName } = environment;
+    const authUUID = generateUUID(playerName);
     const osName = detectOS();
     const arch = detectArch();
     const classpathSeparator = getClasspathSeperator(osName);
@@ -46,7 +49,7 @@ module.exports.launchClient = async function(cliVersion, options, config) {
 
     const subsitute = (str) => subsitutePlaceholders(str, {
         version: cliVersion, classpath, loaderVersion: version, libDir, classpathSeparator,
-        assetsDir, assetIndex, versionType: versionJSON.type, gameDir: installDir
+        assetsDir, assetIndex, playerName, authUUID, versionType: versionJSON.type, gameDir: installDir
     });
     const jvmArgs = versionJSON.arguments.jvm.map(arg => subsitute(arg));
     const gameArgs = versionJSON.arguments.game.map(arg => subsitute(arg));
