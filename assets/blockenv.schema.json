@@ -1,0 +1,34 @@
+{
+    "$schema": "https://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "baseDir": {
+            "description": "The base directory for the environments.",
+            "type": "string"
+        },
+        "environments": {
+            "description": "A map of environment names to their configurations.",
+            "type": "object",
+            "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "description": "The name of the environment.",
+                            "type": "string"
+                        },
+                        "type": {
+                            "description": "The type of the environment, either 'client' or 'server'.",
+                            "type": "string",
+                            "enum": ["client", "server"]
+                        },
+                        "path": {
+                            "description": "The relative path to the environment directory.",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

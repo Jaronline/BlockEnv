@@ -1,4 +1,5 @@
 {
+    "$schema": "./assets/blockenv.schema.json",
     "baseDir": "env",
     "environments": {
         "client": {
