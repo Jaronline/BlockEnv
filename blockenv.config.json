@@ -4,7 +4,8 @@
         "client": {
             "name": "Client Environment",
             "type": "client",
-            "path": "client"
+            "path": "client",
+            "playerName": "Sftotwar gpe"
         },
         "client2": {
             "name": "Client Environment 2",
