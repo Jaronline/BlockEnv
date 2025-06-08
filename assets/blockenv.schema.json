@@ -26,7 +26,8 @@
                             "description": "The relative path to the environment directory.",
                             "type": "string"
                         }
-                    }
+                    },
+                    "required": ["name", "type"]
                 }
             }
         }
