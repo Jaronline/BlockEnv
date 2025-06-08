@@ -1,4 +1,5 @@
 {
+    "$schema": "./assets/blockenv.schema.json",
     "baseDir": "env",
     "environments": {
         "client": {
@@ -9,7 +10,8 @@
         "client2": {
             "name": "Client Environment 2",
             "type": "client",
-            "path": "client2"
+            "path": "client2",
+            "playerName": "OfflinePlayer2"
         },
         "server": {
             "name": "Server Environment",
