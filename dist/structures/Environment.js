@@ -36,7 +36,7 @@ module.exports.Environment = class Environment {
     }
 
     get playerName(){
-        return this.#data.playerName;
+        return this.#data.playerName ?? null;
     }
 
     #validateData(data = this.#data) {
