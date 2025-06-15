@@ -25,7 +25,7 @@ module.exports.loadCommands = function(program) {
     program
         .command("launch")
         .description("Launch the Minecraft client or server")
-        .addOption(new Option("-s, --side <side>", "Whether to launch the server or client (default: client)").choices(["client", "server"]))
+        .addOption(new Option("-s, --side <side>", "Whether to launch the server or client").choices(["client", "server"]).default("client"))
         .addOption(new Option("-e, --environment <environment>", "The environment to use for the launch").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .option("-p, --profile <profile>", "The client profile to launch")
         .option("--player-name <playerName>", "The player name to use in the game")
@@ -39,7 +39,7 @@ module.exports.loadCommands = function(program) {
 }
 
 async function runLaunch(version, options, config) {
-    const { side = "client", environment } = options;
+    const { side, environment } = options;
     switch (environment?.type ?? side) {
         case "client":
             await require("./client").launchClient(version, options, config);
