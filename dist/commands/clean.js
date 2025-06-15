@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { parseSide, parseEnvName } = require("../parsers");
+const { parseEnvName } = require("../parsers");
 const { join } = require("node:path");
 const { existsSync } = require("node:fs");
 const { rmrf, determineInstallPath } = require("../utils");
