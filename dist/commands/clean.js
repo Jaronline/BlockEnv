@@ -28,7 +28,7 @@ module.exports.loadCommands = function(program) {
     program
         .command("clean")
         .description("Clean the testing environment")
-        .option("-s, --side <side>", "Whether to clean the server or client", parseSide)
+        .addOption(new Option("-s, --side <side>", "Whether to clean the server or client").choices(["client", "server"]))
         .addOption(new Option("-e, --environment <environment>", "The environment to clean").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .action(async (options) => {
             try {

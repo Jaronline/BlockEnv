@@ -25,7 +25,7 @@ module.exports.loadCommands = function(program) {
     program
         .command("setup")
         .description("Setup the testing environment")
-        .option("-s, --side <side>", "Whether to setup the server or client", parseSide)
+        .addOption(new Option("-s, --side <side>", "Whether to setup the server or client").choices(["client", "server"]))
         .addOption(new Option("-e, --environment <environment>", "Which environment to setup").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .option("-m, --minecraft-version <version>", "Specify the Minecraft version to use")
         .requiredOption("-l, --loader <loader>", "Specify the modloader to use (currently only 'neoforge' is supported)", "neoforge", parseLoader)
