@@ -1,0 +1,16 @@
+{
+    "$schema": "https://raw.githubusercontent.com/favware/cliff-jumper/main/assets/cliff-jumper.schema.json",
+    "name": "blockenv",
+    "install": true,
+    "packagePath": ".",
+    "org": "jaronline",
+    "monoRepo": false,
+    "identifierBase": false,
+    "pushTag": true,
+    "githubRelease": true,
+    "githubReleaseLatest": true,
+    "gitRepo": "jaronline/blockenv",
+    "gitHostVariant": "github",
+    "gitToken": "TRY_AGAIN_LATER",
+    "tagTemplate": "v{{new-version}}"
+}
