@@ -1,5 +1,7 @@
 <div align="center">
 
+<img width="256" src="./icon.png" alt="BlockEnv logo">
+
 # BlockEnv
 
 **Minecraft Java testing environment for modpacks.**
