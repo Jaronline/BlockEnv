@@ -17,5 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 module.exports = {
     Program: require("./Program"),
+	Downloader: require("./download/Downloader"),
+	...require("./download/DownloadStrategy"),
+	...require("./download/CurlStrategy"),
     ...require("./config"),
 };

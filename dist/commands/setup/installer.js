@@ -17,20 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { join } = require("node:path");
 const { mkdir, mkdtemp } = require("node:fs/promises");
-const { curl, spawnAsync, rmrf } = require("../../utils");
+const { spawnAsync, rmrf } = require("../../utils");
 const { tmpdir: getTempDir } = require("node:os");
 
-module.exports.downloadInstaller = async function({ loaderVersion }) {
+/**
+ * @param {Downloader} downloader
+ * @param loaderVersion
+ */
+module.exports.downloadInstaller = async function(downloader, { loaderVersion }) {
     const tmpDir = await mkdtemp(join(getTempDir(), "blockenv-"));
 
-    console.log("Downloading installer...");
-    await curl(`https://maven.neoforged.net/releases/net/neoforged/neoforge/${loaderVersion}/neoforge-${loaderVersion}-installer.jar`, {
-        failOnError: true,
-        location: true,
-        ip: "ipv4",
-        retry: 3,
-        output: join(tmpDir, "installer.jar")
-    });
+	await downloader.download(`https://maven.neoforged.net/releases/net/neoforged/neoforge/${loaderVersion}/neoforge-${loaderVersion}-installer.jar`, {
+		output: join(tmpDir, "installer.jar"),
+	});
 
     return tmpDir;
 }
@@ -73,7 +72,7 @@ function parseArgs(args) {
 module.exports.runInstaller = async function({ installDir, tmpDir }, args) {
     validateArgs(args);
     args = parseArgs(args);
-    
+
     console.log("Running installer...");
     await mkdir(installDir, { recursive: true });
     await spawnAsync("java", [

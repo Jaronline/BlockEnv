@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const { existsSync } = require("node:fs");
 const { mkdir } = require("node:fs/promises");
 const { join } = require("node:path");
-const { curl } = require("../../../utils");
 
 function getVersionMetaURL({ manifestPath, minecraftVersion }) {
     const versionMetaURL = require(manifestPath)?.versions?.find?.(v => v.id === minecraftVersion)?.url;
@@ -30,7 +29,14 @@ function getVersionMetaURL({ manifestPath, minecraftVersion }) {
     return versionMetaURL;
 }
 
-module.exports.downloadVersionMeta = async function({ manifestPath, versionDir, minecraftVersion }) {
+/**
+ *
+ * @param {Downloader} downloader
+ * @param manifestPath
+ * @param versionDir
+ * @param minecraftVersion
+ */
+module.exports.downloadVersionMeta = async function(downloader, { manifestPath, versionDir, minecraftVersion }) {
     const versionMetaURL = getVersionMetaURL({ manifestPath, minecraftVersion });
 
     if (!existsSync(versionDir)) {
@@ -40,33 +46,36 @@ module.exports.downloadVersionMeta = async function({ manifestPath, versionDir, 
     const versionJSON = join(versionDir, `${minecraftVersion}.json`);
 
     if (!existsSync(versionJSON)) {
-        console.log(`Downloading version ${minecraftVersion} metadata...`);
-        await curl(versionMetaURL, {
-            location: true,
-            output: versionJSON,
-            silent: true,
-            showError: true,
-            failOnError: true,
-            retry: 3
-        });
+		await downloader.download(versionMetaURL, {
+			hooks: {
+				onDownloadStart: () => console.log(`Download version ${minecraftVersion}.json metadata...`),
+				onDownloadEnd: () => console.log("Version metadata downloaded successfully."),
+			},
+			output: versionJSON,
+		});
     }
 
     return require(versionJSON);
 }
 
-module.exports.downloadVersionJar = async function({ versionDir, minecraftVersion, versionJSON }) {
+/**
+ * @param {Downloader} downloader
+ * @param versionDir
+ * @param minecraftVersion
+ * @param versionJSON
+ * @returns {Promise<void>}
+ */
+module.exports.downloadVersionJar = async function(downloader, { versionDir, minecraftVersion, versionJSON }) {
     const versionJar = join(versionDir, `${minecraftVersion}.jar`);
 
     if (!existsSync(versionJar)) {
         const mcJarURL = versionJSON.downloads?.client?.url;
-        console.log(`Downloading Minecraft client jar for version ${minecraftVersion}...`);
-        await curl(mcJarURL, {
-            location: true,
-            output: versionJar,
-            silent: true,
-            showError: true,
-            failOnError: true,
-            retry: 3
-        });
+		await downloader.download(mcJarURL, {
+			hooks: {
+				onDownloadStart: () => console.log(`Downloading Minecraft client jar for version ${minecraftVersion}...`),
+				onDownloadEnd: () => console.log("Minecraft client jar downloaded successfully."),
+			},
+			output: versionJar,
+		});
     }
 }

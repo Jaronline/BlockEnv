@@ -21,12 +21,12 @@ const { determineInstallPath } = require("../../utils");
 const { existsSync } = require("node:fs");
 const { join } = require("node:path");
 
-module.exports.setup = async function(options, config) {
+module.exports.setup = async function(options, config, downloader) {
     const { loaderVersion } = options;
     const installDir = determineInstallPath(options, config);
 
     if (!existsSync(join(installDir, "run.bat")) || !existsSync(join(installDir, "run.sh"))) {
-        const tmpDir = await downloadInstaller({ loaderVersion });
+        const tmpDir = await downloadInstaller(downloader, { loaderVersion });
         await runInstaller(
             { installDir, tmpDir },
             { installServer: installDir, serverJar: true });

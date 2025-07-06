@@ -17,54 +17,65 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { existsSync } = require("node:fs");
 const { mkdir } = require("node:fs/promises");
-const { basename, join } = require("node:path");
-const { curl } = require("../../../utils");
+const { basename, join, dirname } = require("node:path");
 
-module.exports.downloadAssetsIndex = async function({ assetIndexDir, versionJSON }) {
+/**
+ * @param {Downloader} downloader
+ * @param assetIndexDir
+ * @param versionJSON
+ */
+module.exports.downloadAssetsIndex = async function(downloader, { assetIndexDir, versionJSON }) {
     if (!existsSync(assetIndexDir)) {
         await mkdir(assetIndexDir, { recursive: true });
     }
 
-    console.log("Downloading version assets...");
     const assetsURL = versionJSON.assetIndex.url;
     const assetIndexFile = basename(assetsURL);
     const indexFile = join(assetIndexDir, assetIndexFile);
 
     if (!existsSync(indexFile)) {
-        await curl(assetsURL, {
-            silent: true,
-            showError: true,
-            location: true,
-            output: indexFile,
-            failOnError: true,
-            retry: 3
-        });
+		await downloader.download(assetsURL, {
+			hooks: {
+				onDownloadStart: () => console.log("Downloading assets index..."),
+				onDownloadEnd: () => console.log("Assets index downloaded successfully."),
+			},
+			output: indexFile,
+		});
     }
 
     return require(indexFile);
 }
 
-module.exports.downloadAssets = async function({ indexFile, assetsDir }) {
-    await Promise.all(Object.entries(indexFile.objects)
-        .map(([ key, value ]) => ({ hash: value.hash, path: key }))
-        .map(async ({ hash, path }) => {
-            const subDir = hash.substring(0, 2);
-            const url = `https://resources.download.minecraft.net/${subDir}/${hash}`;
-            const destDir = join(assetsDir, "objects", subDir);
-            const dest = join(destDir, hash);
+/**
+ * @param {Downloader} downloader
+ * @param indexFile
+ * @param assetsDir
+ */
+module.exports.downloadAssets = async function(downloader, { indexFile, assetsDir }) {
+	const filesToDownload = Object.entries(indexFile.objects)
+		.map(([ key, value ]) => ({ hash: value.hash, path: key, subDir: value.hash.substring(0, 2) }))
+		.map(({ hash, path, subDir }) =>
+			({ hash, path, subDir, dest: join(assetsDir, "objects", subDir, hash) }))
+		.filter(({ dest }) => !existsSync(dest));
 
-            if (!existsSync(dest)) {
-                console.log(`Downloading asset ${path}...`);
-                await mkdir(destDir, { recursive: true });
-                await curl(url, {
-                    ip: "ipv4",
-                    silent: true,
-                    showError: true,
-                    location: true,
-                    output: dest,
-                    failOnError: true,
-                    retry: 3
-                });
-            }
-        }));
+	if (filesToDownload.length === 0) {
+		return;
+	}
+
+	const urls = filesToDownload.map(({ hash, subDir }) => `https://resources.download.minecraft.net/${subDir}/${hash}`);
+	const destinations = filesToDownload.map(({ dest }) => dest);
+	await downloader.downloadBatches(urls, {
+		hooks: {
+			onBatchListStart: ({ batchSize }) => console.log(`Downloading assets in batches of ${batchSize}...`),
+			onBatchDownloadStart: ({ batchIndex: i, batchSize, urls, batchCount }) =>
+				console.log(`Downloading batch ${Math.floor(i / batchSize) + 1} of ${batchCount} (${urls.length} files)...`),
+			onDownloadStart: ({ index, batchIndex }) => console.log(`Downloading asset ${filesToDownload[index + batchIndex].path}...`),
+			onDownloadEnd: ({ index, batchIndex }) => console.log(`Asset ${filesToDownload[index + batchIndex].path} downloaded successfully.`),
+			onDownloadError: ({ error, index, batchIndex }) =>
+				Promise.reject(new Error(`Error downloading asset ${filesToDownload[index + batchIndex].path}: ${error.message}`)),
+			onBatchDownloadEnd: () => console.log("All assets in batch downloaded successfully."),
+			onBatchListEnd: () => console.log("All assets downloaded successfully."),
+		},
+		output: destinations,
+	});
 }
