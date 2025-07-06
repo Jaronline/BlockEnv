@@ -1,0 +1,61 @@
+name: Continuous Delivery
+
+on:
+  workflow_dispatch:
+    inputs:
+      prNumber:
+        description: The number of the PR that is being deployed
+        required: false
+        type: string
+      ref:
+        description: The branch that is being deployed. Should be a branch on the given repository
+        required: false
+        default: main
+        type: string
+      repository:
+        description: The {owner}/{repository} that is being deployed.
+        required: false
+        default: jaronline/blockenv
+        type: string
+  push:
+    branches:
+      - main
+
+jobs:
+  Publish:
+    name: Publish next to NPM
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'jaronline'
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Use Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enable corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Bump version & publish
+        run: |
+          # Resolve the tag to be used. "next" for push events, "pr-{prNumber}" for dispatch events.
+          TAG=$([[ ${{ github.event_name }} == 'push' ]] && echo 'next' || echo 'pr-${{ inputs.pr-number }}')
+
+          yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
+          yarn config set npmPublishRegistry "https://registry.yarnpkg.com"
+
+          yarn bump --preid "${TAG}.$(git rev-parse --verify --short HEAD)" --skip-changelog
+
+          # Detect whether the current Yarn version is eligible for publishing with provenance (v4.9.0 or later)
+          FLAG=$([ $(node -p "require('semver').gte('$(yarn --version)', '4.9.0')") = true ] && echo '--provenance' || echo '')
+
+          yarn npm publish --tag ${TAG} ${FLAG}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
