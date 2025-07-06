@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { Program, getConfig } = require("./lib");
+const { Program, getConfig, createAllCurlStrategy } = require("./lib");
 const { version } = require("../package.json");
 
 const program = new Program("blockenv")
@@ -24,7 +24,9 @@ const program = new Program("blockenv")
     .version(version);
 
 try {
-    program.config(getConfig());
+    program
+		.config(getConfig())
+		.allDownloadStrategy(createAllCurlStrategy());
 
     require("./commands/clean").loadCommands(program);
     require("./commands/setup").loadCommands(program);

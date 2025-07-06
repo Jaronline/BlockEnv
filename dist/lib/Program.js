@@ -16,9 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { Command } = require("commander");
+const Downloader = require("./download/Downloader");
 
 module.exports = class Program extends Command {
     #config = {};
+	#downloader = new Downloader();
 
     config(config) {
         if (config) {
@@ -27,4 +29,30 @@ module.exports = class Program extends Command {
         }
         return this.#config;
     }
+
+	downloadStrategy(strategy) {
+		if (strategy) {
+			this.#downloader.downloadStrategy = strategy;
+			return this;
+		}
+		return this.#downloader.downloadStrategy;
+	}
+
+	batchDownloadStrategy(strategy) {
+		if (strategy) {
+			this.#downloader.batchDownloadStrategy = strategy;
+			return this;
+		}
+		return this.#downloader.batchDownloadStrategy;
+	}
+
+	allDownloadStrategy({ downloadStrategy, batchDownloadStrategy }) {
+		this.#downloader.downloadStrategy = downloadStrategy;
+		this.#downloader.batchDownloadStrategy = batchDownloadStrategy;
+		return this;
+	}
+
+	get downloader() {
+		return this.#downloader;
+	}
 }

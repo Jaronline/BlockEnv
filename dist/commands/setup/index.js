@@ -32,7 +32,7 @@ module.exports.loadCommands = function(program) {
         .requiredOption("--loader-version <version>", "Specify the modloader version to use")
         .action(async (options) => {
             try {
-                await runSetup(options, program.config());
+                await runSetup(options, program.config(), program.downloader);
             } catch (error) {
                 program.error(error.message);
             }
@@ -44,15 +44,15 @@ const envTypeFiles = {
     "server": "./server",
 };
 
-async function runSetup(options, config) {
+async function runSetup(options, config, downloader) {
     const { side, environment } = options;
     if (environment) {
         return require(envTypeFiles[environment.type]).setup(options, config);
     }
     if (!side || side == "client") {
-        await require("./client").setup(options, config);
+        await require("./client").setup(options, config, downloader);
     }
     if (!side || side == "server") {
-        await require("./server").setup(options, config);
+        await require("./server").setup(options, config, downloader);
     }
 }

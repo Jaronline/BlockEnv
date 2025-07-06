@@ -26,7 +26,7 @@ const { determineInstallPath } = require("../../../utils");
 const { join } = require("node:path");
 const { existsSync } = require("node:fs");
 
-module.exports.setup = async function(options, config) {
+module.exports.setup = async function(options, config, downloader) {
     const { loaderVersion, minecraftVersion } = options;
     const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
@@ -38,17 +38,17 @@ module.exports.setup = async function(options, config) {
     const osName = detectOS();
     const arch = detectArch();
 
-    const manifestPath = await downloadManifest({ versionsDir });
-    const versionJSON = await downloadVersionMeta({ manifestPath, versionDir, minecraftVersion });
-    await downloadVersionJar({ versionJSON, versionDir, minecraftVersion });
-    await downloadLibraries({ libDir, versionJSON, osName, arch });
+    const manifestPath = await downloadManifest(downloader, { versionsDir });
+    const versionJSON = await downloadVersionMeta(downloader, { manifestPath, versionDir, minecraftVersion });
+    await downloadVersionJar(downloader, { versionJSON, versionDir, minecraftVersion });
+    await downloadLibraries(downloader, { libDir, versionJSON, osName, arch });
     await extractNatives({ nativesDir, libDir, osName, arch, versionJSON });
-    const indexFile = await downloadAssetsIndex({ assetIndexDir, versionJSON });
-    await downloadAssets({ indexFile, assetsDir });
+    const indexFile = await downloadAssetsIndex(downloader, { assetIndexDir, versionJSON });
+    await downloadAssets(downloader, { indexFile, assetsDir });
     await generateLauncherProfiles({ installDir });
 
     if (!existsSync(join(versionsDir, `neoforge-${loaderVersion}`, `neoforge-${loaderVersion}.json`))) {
-        const tmpDir = await downloadInstaller({ loaderVersion });
+        const tmpDir = await downloadInstaller(downloader, { loaderVersion });
         await runInstaller({ installDir, tmpDir }, {
             installClient: installDir
         });

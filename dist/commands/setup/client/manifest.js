@@ -18,25 +18,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const { existsSync } = require("node:fs");
 const { mkdir } = require("node:fs/promises");
 const { join } = require("node:path");
-const { curl } = require("../../../utils");
 
-module.exports.downloadManifest = async function({ versionsDir }) {
+/**
+ * @param {Downloader} downloader
+ * @param versionsDir
+ */
+module.exports.downloadManifest = async function(downloader, { versionsDir }) {
     if (!existsSync(versionsDir)) {
         await mkdir(versionsDir, { recursive: true });
     }
 
     const versionManifestPath = join(versionsDir, "version_manifest_v2.json");
-    
+
     if (!existsSync(versionManifestPath)) {
-        console.log("Downloading version manifest...");
-        await curl("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json", {
-            location: true,
-            output: versionManifestPath,
-            silent: true,
-            showError: true,
-            failOnError: true,
-            retry: 3
-        });
+		await downloader.download("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json", {
+			hooks: {
+				onDownloadStart: () => console.log("Starting download of version manifest..."),
+				onDownloadEnd: () => console.log("Version manifest downloaded successfully."),
+			},
+			output: versionManifestPath,
+		});
     }
 
     return versionManifestPath;

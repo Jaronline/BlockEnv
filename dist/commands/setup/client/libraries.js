@@ -18,38 +18,45 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const { existsSync, createWriteStream } = require("node:fs");
 const { mkdir } = require("node:fs/promises");
 const { join, dirname, basename } = require("node:path");
-const { curl } = require("../../../utils");
 const { ruleFilter } = require("../../../filters");
 const { Open: unzip } = require("unzipper");
 
-module.exports.downloadLibraries = async function({ libDir, versionJSON, osName, arch }) {
+/**
+ * @param {Downloader} downloader
+ * @param libDir
+ * @param versionJSON
+ * @param osName
+ * @param arch
+ * @returns {Promise<*>}
+ */
+module.exports.downloadLibraries = async function(downloader, { libDir, versionJSON, osName, arch }) {
     if (!existsSync(libDir)) {
         await mkdir(libDir, { recursive: true });
     }
 
-    console.log("Downloading libraries...");
-    await Promise.all(versionJSON.libraries
-        .filter(lib => ruleFilter(lib.rules, { osName, arch }))
-        .map(lib => lib.downloads.artifact)
-        .map(async ({ url, path }) => {
-            const dest = join(libDir, path);
-            const dir = dirname(dest);
+	const librariesToDownload = versionJSON.libraries
+		.filter(lib => ruleFilter(lib.rules, { osName, arch }))
+		.map(lib => lib.downloads.artifact)
+		.map(({ path, url }) => ({ path, url, dest: join(libDir, path) }))
+		.filter(({ dest }) => !existsSync(dest));
 
-            if (!existsSync(dir)) {
-                console.log(`Downloading library ${path}...`);
-                await mkdir(dir, { recursive: true });
-                await curl(url, {
-                    ip: "ipv4",
-                    failOnError: true,
-                    silent: true,
-                    showError: true,
-                    location: true,
-                    output: dest,
-                    retry: 3
-                }).catch(err => 
-                    Promise.reject(new Error(`Failed to download library ${path}: ${err.message}`)));
-            }
-        }));
+	if (librariesToDownload.length === 0) {
+		return;
+	}
+
+	const urls = librariesToDownload.map(lib => lib.url);
+	const destinations = librariesToDownload.map(lib => lib.path);
+	return downloader.downloadBatch(urls, {
+		hooks: {
+			onBatchDownloadStart: () => console.log(`Downloading ${urls.length} libraries...`),
+			onBatchDownloadEnd: () => console.log("All libraries downloaded successfully."),
+			onDownloadStart: ({index}) => console.log(`Downloading library ${librariesToDownload[index].path}...`),
+			onDownloadEnd: ({index}) => console.log(`Library ${librariesToDownload[index].path} downloaded successfully.`),
+			onDownloadError: ({error, index}) =>
+				Promise.reject(new Error(`Failed to download library ${librariesToDownload[index].path}: ${error.message}`)),
+		},
+		output: destinations,
+	});
 }
 
 async function extractNativesFromJar(jarPath, nativesDir) {
@@ -81,7 +88,7 @@ module.exports.extractNatives = async function({ nativesDir, libDir, osName, arc
         .map(lib => lib.downloads.artifact)
         .map(async ({ path }) => {
             const jar = join(libDir, path);
-            
+
             if (existsSync(jar)) {
                 extractNativesFromJar(jar, nativesDir);
             } else {
