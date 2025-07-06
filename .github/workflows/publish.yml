@@ -28,6 +28,11 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
         run: |
           yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
-          yarn npm publish
+          yarn config set npmPublishRegistry "https://registry.yarnpkg.com"
+
+          # Detect whether the current Yarn version is eligible for publishing with provenance (v4.9.0 or later)
+          FLAG=$([ $(node -p "require('semver').gte('$(yarn --version)', '4.9.0')") = true ] && echo '--provenance' || echo '')
+
+          yarn npm publish ${FLAG}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
