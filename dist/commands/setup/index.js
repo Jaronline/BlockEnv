@@ -47,7 +47,7 @@ const envTypeFiles = {
 async function runSetup(options, config, downloader) {
     const { side, environment } = options;
     if (environment) {
-        return require(envTypeFiles[environment.type]).setup(options, config);
+        return require(envTypeFiles[environment.type]).setup(options, config, downloader);
     }
     if (!side || side == "client") {
         await require("./client").setup(options, config, downloader);
