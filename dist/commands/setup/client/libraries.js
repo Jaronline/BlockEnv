@@ -45,7 +45,7 @@ module.exports.downloadLibraries = async function(downloader, { libDir, versionJ
 	}
 
 	const urls = librariesToDownload.map(lib => lib.url);
-	const destinations = librariesToDownload.map(lib => lib.path);
+	const destinations = librariesToDownload.map(lib => join(libDir, lib.path));
 	return downloader.downloadBatch(urls, {
 		hooks: {
 			onBatchDownloadStart: () => console.log(`Downloading ${urls.length} libraries...`),
