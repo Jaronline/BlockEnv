@@ -61,7 +61,7 @@
                     "required": ["name", "type"]
                 }
             },
-			"additionalProperties": false
+            "additionalProperties": false
 		}
     }
 }
