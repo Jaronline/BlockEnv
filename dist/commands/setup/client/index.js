@@ -17,20 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { detectOS, detectArch } = require("../../../utils");
 const { downloadManifest } = require("./manifest");
-const { downloadVersionMeta, downloadVersionJar } = require("./version");
+const { mergeInheritedVersionMeta, downloadVersionJar, downloadVersionMeta } = require("./version");
 const { downloadLibraries, extractNatives } = require("./libraries");
 const { downloadAssetsIndex, downloadAssets } = require("./assets");
 const { generateLauncherProfiles } = require("./profile");
-const { downloadInstaller, runInstaller, cleanInstaller } = require("../installer");
+const { determineVersionPath, downloadAndRunInstaller } = require("./installer");
 const { determineInstallPath } = require("../../../utils");
 const { join } = require("node:path");
-const { existsSync } = require("node:fs");
 
 module.exports.setup = async function(options, config, downloader) {
-    const { loaderVersion, minecraftVersion } = options;
+    const { loaderVersion, newSetupOrder, minecraftVersion } = options;
     const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
-    const versionDir = join(versionsDir, minecraftVersion);
     const libDir = join(installDir, "libraries");
     const assetsDir = join(installDir, "assets");
     const assetIndexDir = join(assetsDir, "indexes");
@@ -38,20 +36,27 @@ module.exports.setup = async function(options, config, downloader) {
     const osName = detectOS();
     const arch = detectArch();
 
-    const manifestPath = await downloadManifest(downloader, { versionsDir });
-    const versionJSON = await downloadVersionMeta(downloader, { manifestPath, versionDir, minecraftVersion });
-    await downloadVersionJar(downloader, { versionJSON, versionDir, minecraftVersion });
-    await downloadLibraries(downloader, { libDir, versionJSON, osName, arch });
-    await extractNatives({ nativesDir, libDir, osName, arch, versionJSON });
-    const indexFile = await downloadAssetsIndex(downloader, { assetIndexDir, versionJSON });
-    await downloadAssets(downloader, { indexFile, assetsDir });
-    await generateLauncherProfiles({ installDir });
-
-    if (!existsSync(join(versionsDir, `neoforge-${loaderVersion}`, `neoforge-${loaderVersion}.json`))) {
-        const tmpDir = await downloadInstaller(downloader, { loaderVersion });
-        await runInstaller({ installDir, tmpDir }, {
-            installClient: installDir
-        });
-        await cleanInstaller(tmpDir);
-    }
+	if (newSetupOrder) {
+		await generateLauncherProfiles({ installDir });
+		const manifestPath = await downloadManifest(downloader, { versionsDir });
+		const versionPath = determineVersionPath({ versionDir: versionsDir, loaderVersion });
+		await downloadAndRunInstaller(downloader, {versionPath, loaderVersion, installDir });
+		const versionJSON = await mergeInheritedVersionMeta(downloader, { versionPath, manifestPath });
+		await downloadLibraries(downloader, { libDir, versionJSON, osName, arch });
+		await extractNatives({ nativesDir, libDir, osName, arch, versionJSON });
+		const indexFile = await downloadAssetsIndex(downloader, { assetIndexDir, versionJSON });
+		await downloadAssets(downloader, { indexFile, assetsDir });
+	} else {
+		const versionDir = join(versionsDir, minecraftVersion);
+		const manifestPath = await downloadManifest(downloader, { versionsDir });
+		const versionJSON = await downloadVersionMeta(downloader, { manifestPath, versionDir, minecraftVersion });
+		await downloadVersionJar(downloader, { versionJSON, versionDir, minecraftVersion });
+		await downloadLibraries(downloader, { libDir, versionJSON, osName, arch });
+		await extractNatives({ nativesDir, libDir, osName, arch, versionJSON });
+		const indexFile = await downloadAssetsIndex(downloader, { assetIndexDir, versionJSON });
+		await downloadAssets(downloader, { indexFile, assetsDir });
+		await generateLauncherProfiles({ installDir });
+		const versionPath = determineVersionPath({ versionDir: versionsDir, loaderVersion });
+		await downloadAndRunInstaller(downloader, {versionPath, loaderVersion, installDir });
+	}
 }

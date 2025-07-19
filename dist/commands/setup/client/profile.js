@@ -16,11 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { existsSync } = require("node:fs");
-const { writeFile } = require("node:fs/promises");
+const { writeFile, mkdir } = require("node:fs/promises");
 const { join } = require("node:path");
 
 module.exports.generateLauncherProfiles = async function({ installDir }) {
     const profileFile = join(installDir, "launcher_profiles.json");
+
+	if (!existsSync(installDir)) {
+		await mkdir(installDir, { recursive: true });
+	}
 
     if (!existsSync(profileFile)) {
         console.log("Generating launcher profiles...");

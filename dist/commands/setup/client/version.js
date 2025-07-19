@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { existsSync } = require("node:fs");
 const { mkdir } = require("node:fs/promises");
-const { join } = require("node:path");
+const { join, basename, dirname } = require("node:path");
 
 function getVersionMetaURL({ manifestPath, minecraftVersion }) {
     const versionMetaURL = require(manifestPath)?.versions?.find?.(v => v.id === minecraftVersion)?.url;
@@ -36,7 +36,7 @@ function getVersionMetaURL({ manifestPath, minecraftVersion }) {
  * @param versionDir
  * @param minecraftVersion
  */
-module.exports.downloadVersionMeta = async function(downloader, { manifestPath, versionDir, minecraftVersion }) {
+async function downloadVersionMeta(downloader, { manifestPath, versionDir, minecraftVersion }) {
     const versionMetaURL = getVersionMetaURL({ manifestPath, minecraftVersion });
 
     if (!existsSync(versionDir)) {
@@ -65,7 +65,7 @@ module.exports.downloadVersionMeta = async function(downloader, { manifestPath, 
  * @param versionJSON
  * @returns {Promise<void>}
  */
-module.exports.downloadVersionJar = async function(downloader, { versionDir, minecraftVersion, versionJSON }) {
+async function downloadVersionJar(downloader, { versionDir, minecraftVersion, versionJSON }) {
     const versionJar = join(versionDir, `${minecraftVersion}.jar`);
 
     if (!existsSync(versionJar)) {
@@ -79,3 +79,57 @@ module.exports.downloadVersionJar = async function(downloader, { versionDir, min
 		});
     }
 }
+
+function mergeVersionMetas(versionMetaA, versionMetaB) {
+	return {
+		...versionMetaA,
+		...versionMetaB,
+		arguments: {
+			game: [
+				...(versionMetaA.arguments?.game || []),
+				...(versionMetaB.arguments?.game || [])
+			],
+			jvm: [
+				...(versionMetaA.arguments?.jvm || []),
+				...(versionMetaB.arguments?.jvm || [])
+			]
+		},
+		libraries: [
+			...(versionMetaA.libraries || []),
+			...(versionMetaB.libraries || [])
+		],
+	};
+}
+
+async function mergeInheritedVersionMeta(downloader, { versionPath, manifestPath }) {
+	if (!existsSync(versionPath)) {
+		throw new Error(`Version meta ${basename(versionPath)} does not exist.`);
+	}
+
+	const versionMeta = require(versionPath);
+
+	if ("inheritsFrom" in versionMeta) {
+		const inheritedVersionPath = join(dirname(dirname(versionPath)), versionMeta.inheritsFrom,
+			`${versionMeta.inheritsFrom}.json`);
+		const inheritedVersionMeta = await downloadVersionMeta(downloader, {
+			manifestPath,
+			minecraftVersion: versionMeta.inheritsFrom,
+			versionDir: dirname(inheritedVersionPath),
+		});
+		await downloadVersionJar(downloader, {
+			versionDir: dirname(inheritedVersionPath),
+			minecraftVersion: versionMeta.inheritsFrom,
+			versionJSON: inheritedVersionMeta,
+		});
+		return mergeVersionMetas(versionMeta, await mergeInheritedVersionMeta(downloader,
+				{ versionPath: inheritedVersionPath, manifestPath }));
+	}
+
+	return versionMeta;
+}
+
+module.exports = {
+	mergeInheritedVersionMeta,
+	downloadVersionMeta,
+	downloadVersionJar,
+};
