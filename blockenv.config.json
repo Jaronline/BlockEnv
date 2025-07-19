@@ -1,31 +1,31 @@
 {
-    "$schema": "./assets/blockenv.schema.json",
-    "baseDir": "env",
-    "environments": {
-        "client": {
-            "name": "Client Environment",
-            "type": "client",
-            "path": "client"
-        },
-        "client2": {
-            "name": "Client Environment 2",
-            "type": "client",
-            "path": "client2",
-            "playerName": "OfflinePlayer2"
-        },
-        "server": {
-            "name": "Server Environment",
-            "type": "server",
-            "path": "server"
-        },
-        "server2": {
-            "name": "Server Environment 2",
-            "type": "server",
-            "path": "server2",
+	"$schema": "./assets/blockenv.schema.json",
+	"baseDir": "env",
+	"environments": {
+		"client": {
+			"name": "Client Environment",
+			"type": "client",
+			"path": "client"
+		},
+		"client2": {
+			"name": "Client Environment 2",
+			"type": "client",
+			"path": "client2",
+			"playerName": "OfflinePlayer2"
+		},
+		"server": {
+			"name": "Server Environment",
+			"type": "server",
+			"path": "server"
+		},
+		"server2": {
+			"name": "Server Environment 2",
+			"type": "server",
+			"path": "server2",
 			"loader": {
 				"name": "neoforge",
 				"version": "21.8.2-beta"
 			}
-        }
-    }
+		}
+	}
 }
