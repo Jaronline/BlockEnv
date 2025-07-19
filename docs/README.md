@@ -59,7 +59,7 @@ In environments you can specify configurations for your client and server enviro
 
 | Name       | Type   | Description                                                                     |
 |------------|--------|---------------------------------------------------------------------------------|
-| playerName | string | The name of the player for the environment. This is used as Minecraft username. |
+| playerName | string | The name of the player for the environment. This is used as the Minecraft username. |
 
 # Reference
 
