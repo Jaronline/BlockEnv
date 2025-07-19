@@ -25,8 +25,22 @@ In environments you can specify configurations for your client and server enviro
         "client": {
             "name": "Client Environment",
             "type": "client", // "client" or "server"
-            "path": "client" // installation path
-        } 
+            "path": "client", // installation path
+            "loader": {
+                "name": "neoforge",
+                "version": "21.1.173"
+            },
+            "playerName": "Developer"
+        },
+        "server": {
+            "name": "Server Environment",
+            "type": "server", // "client" or "server"
+            "path": "server", // installation path
+            "loader": {
+                "name": "neoforge",
+                "version": "21.1.173"
+            }
+        }
     }
     // ...
 }
@@ -34,15 +48,33 @@ In environments you can specify configurations for your client and server enviro
 
 ### Common properties
 
-| Name | Type                                  | Description                                                                               |
-|------|---------------------------------------|-------------------------------------------------------------------------------------------|
-| name | string                                | The name of your environment, used in logs.                                               |
-| type | [environment type](#environment-type) | The type of environment, can be either "client" or "server".                              |
-| path | string                                | The path to the environment installation. This path is resolved from [baseDir](#basedir). |
+| Name   | Type                                  | Description                                                                               |
+|--------|---------------------------------------|-------------------------------------------------------------------------------------------|
+| name   | string                                | The name of your environment, used in logs.                                               |
+| type   | [environment type](#environment-type) | The type of environment, can be either "client" or "server".                              |
+| path   | string                                | The path to the environment installation. This path is resolved from [baseDir](#basedir). |
+| loader | [loader](#loader)                     | The mod loader information for this environment.                                          |
 
-# Enums
+### Client properties
 
-## Environment Type
+| Name       | Type   | Description                                                                     |
+|------------|--------|---------------------------------------------------------------------------------|
+| playerName | string | The name of the player for the environment. This is used as the Minecraft username. |
+
+# Reference
+
+## Objects
+
+### Loader
+
+| Name    | Type   | Description                    |
+|---------|--------|--------------------------------|
+| name    | string | The name of the mod loader.    |
+| version | string | The version of the mod loader. |
+
+## Enums
+
+### Environment Type
 
 | Name   | Value    |
 |--------|----------|
