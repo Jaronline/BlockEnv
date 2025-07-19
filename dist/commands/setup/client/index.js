@@ -26,7 +26,7 @@ const { determineInstallPath } = require("../../../utils");
 const { join } = require("node:path");
 
 module.exports.setup = async function(options, config, downloader) {
-    const { loaderVersion, newSetupOrder, minecraftVersion } = options;
+    const { newSetupOrder, minecraftVersion, environment } = options;
     const installDir = determineInstallPath(options, config);
     const versionsDir = join(installDir, "versions");
     const libDir = join(installDir, "libraries");
@@ -35,6 +35,7 @@ module.exports.setup = async function(options, config, downloader) {
     const nativesDir = join(installDir, "natives");
     const osName = detectOS();
     const arch = detectArch();
+	const loaderVersion = options.loaderVersion ?? environment.loader?.version;
 
 	if (newSetupOrder) {
 		await generateLauncherProfiles({ installDir });

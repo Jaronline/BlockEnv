@@ -13,6 +13,15 @@
 			"path": "client2",
 			"playerName": "OfflinePlayer2"
 		},
+		"client3": {
+			"name": "Client Environment 3",
+			"type": "client",
+			"path": "client3",
+			"loader": {
+				"name": "neoforge",
+				"version": "21.8.2-beta"
+			}
+		},
 		"server": {
 			"name": "Server Environment",
 			"type": "server",
