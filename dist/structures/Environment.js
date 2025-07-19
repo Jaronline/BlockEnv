@@ -15,12 +15,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+const {ModLoader} = require("./ModLoader");
+
 module.exports.Environment = class Environment {
     #data;
+	#loader;
 
     constructor(data) {
         this.#data = data;
         this.#validateData();
+
+		if (data.loader) {
+			this.#loader = new ModLoader(data.loader);
+		}
     }
 
     get name() {
@@ -38,6 +45,10 @@ module.exports.Environment = class Environment {
     get playerName(){
         return this.#data.playerName ?? null;
     }
+
+	get loader() {
+		return this.#loader ?? null;
+	}
 
     #validateData(data = this.#data) {
         if (!data || typeof data !== "object" || Array.isArray(data)) {

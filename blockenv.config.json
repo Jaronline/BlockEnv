@@ -21,7 +21,11 @@
         "server2": {
             "name": "Server Environment 2",
             "type": "server",
-            "path": "server2"
+            "path": "server2",
+			"loader": {
+				"name": "neoforge",
+				"version": "21.8.2-beta"
+			}
         }
     }
 }

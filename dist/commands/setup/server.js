@@ -22,11 +22,14 @@ const { existsSync } = require("node:fs");
 const { join } = require("node:path");
 
 module.exports.setup = async function(options, config, downloader) {
-    const { loaderVersion } = options;
+    const { loaderVersion, environment } = options;
+	const { loader } = environment;
     const installDir = determineInstallPath(options, config);
 
     if (!existsSync(join(installDir, "run.bat")) || !existsSync(join(installDir, "run.sh"))) {
-        const tmpDir = await downloadInstaller(downloader, { loaderVersion });
+        const tmpDir = await downloadInstaller(downloader, {
+			loaderVersion: loaderVersion || loader.version,
+		});
         await runInstaller(
             { installDir, tmpDir },
             { installServer: installDir, serverJar: true });

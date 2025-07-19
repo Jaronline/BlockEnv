@@ -34,7 +34,23 @@
                             "pattern": "^[a-zA-Z0-9_]+$",
                             "minLength": 1,
                             "maxLength": 16
-                        }
+                        },
+						"loader": {
+							"description": "Mod loader information for this environment.",
+							"type": "object",
+							"properties": {
+								"name": {
+									"description": "The mod loader to use for this environment.",
+									"type": "string",
+									"enum": ["neoforge"]
+								},
+								"version": {
+									"description": "The version of the mod loader.",
+									"type": "string"
+								}
+							},
+							"required": ["name", "version"]
+						}
                     },
                     "allOf": [
                         {

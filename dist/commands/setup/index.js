@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { parseLoader, parseEnvName } = require("../../parsers");
-const { Option } = require("commander");
+const { Option, InvalidArgumentError} = require("commander");
 
 /**
  * @param {import("../../lib").Program} program
@@ -28,9 +28,15 @@ module.exports.loadCommands = function(program) {
         .addOption(new Option("-s, --side <side>", "Whether to setup the server or client").choices(["client", "server"]))
         .addOption(new Option("-e, --environment <environment>", "Which environment to setup").conflicts("side").argParser(parseEnvName.bind(null, program.config())))
         .option("-m, --minecraft-version <version>", "Specify the Minecraft version to use")
-        .requiredOption("-l, --loader <loader>", "Specify the modloader to use (currently only 'neoforge' is supported)", "neoforge", parseLoader)
-        .requiredOption("--loader-version <version>", "Specify the modloader version to use")
-        .action(async (options) => {
+		.addOption(new Option("-l, --loader <loader>", "Specify the modloader to use (currently only 'neoforge' is supported)").argParser(parseLoader))
+		.addOption(new Option("--loader-version <version>", "Specify the modloader version to use"))
+		.hook("preAction", (thisCommand) => {
+			const { environment, loader, loaderVersion } = thisCommand.opts();
+			if (environment && !environment.loader && !(loader && loaderVersion)) {
+				throw new InvalidArgumentError("No loader specified for environment. Please specify a loader and its version.");
+			}
+		})
+		.action(async (options) => {
             try {
                 await runSetup(options, program.config(), program.downloader);
             } catch (error) {
