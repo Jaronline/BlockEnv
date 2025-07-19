@@ -15,23 +15,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const { existsSync } = require("node:fs");
-const { writeFile, mkdir } = require("node:fs/promises");
-const { join } = require("node:path");
+const {join} = require("node:path");
+const {existsSync} = require("node:fs");
+const {downloadInstaller, runInstaller, cleanInstaller} = require("../installer");
 
-module.exports.generateLauncherProfiles = async function({ installDir }) {
-    const profileFile = join(installDir, "launcher_profiles.json");
+module.exports.determineVersionPath = function ({versionDir, loaderVersion}) {
+	return join(versionDir, `neoforge-${loaderVersion}`, `neoforge-${loaderVersion}.json`);
+}
 
-	if (!existsSync(installDir)) {
-		await mkdir(installDir, { recursive: true });
+module.exports.downloadAndRunInstaller = async function (downloader, { versionPath, loaderVersion, installDir }) {
+	if (!existsSync(versionPath)) {
+		const tmpDir = await downloadInstaller(downloader, {loaderVersion});
+		await runInstaller({installDir, tmpDir}, {
+			installClient: installDir
+		});
+		await cleanInstaller(tmpDir);
 	}
-
-    if (!existsSync(profileFile)) {
-        console.log("Generating launcher profiles...");
-        await writeFile(profileFile, JSON.stringify({
-            profiles: {},
-            settings: {},
-            version: 4
-        }, null, 4), "utf8");
-    }
 }
