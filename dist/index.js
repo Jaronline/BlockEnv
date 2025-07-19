@@ -18,15 +18,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 const { Program, getConfig, createAllCurlStrategy } = require("./lib");
 const { version } = require("../package.json");
+const Option = require("./lib/Option");
 
 const program = new Program("blockenv")
     .description("a Minecraft modpack testing environment CLI")
     .version(version);
 
+function checkForDeprecatedOptions(command) {
+	const optionKeys = Object.keys(command.opts());
+	if (optionKeys.length !== 0) {
+		command.options
+			.filter((option) => option instanceof Option && option.deprecated)
+			.filter((option) => optionKeys.includes(option.attributeName()))
+			.forEach((option) => console.warn(
+				`Warning: Option '${option.long}' is deprecated and will be removed in a future version.`
+			));
+	}
+}
+
 try {
     program
 		.config(getConfig())
-		.allDownloadStrategy(createAllCurlStrategy());
+		.allDownloadStrategy(createAllCurlStrategy())
+		.hook("preAction", (thisCommand, actionCommand) => {
+			checkForDeprecatedOptions(thisCommand);
+			checkForDeprecatedOptions(actionCommand);
+		});
 
     require("./commands/clean").loadCommands(program);
     require("./commands/setup").loadCommands(program);
