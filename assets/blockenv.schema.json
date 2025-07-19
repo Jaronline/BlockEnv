@@ -59,16 +59,9 @@
                     ],
                     "additionalProperties": false,
                     "required": ["name", "type"]
-                },
-                "^$": {
-                    "description": "An empty string is not allowed as an environment name.",
-                    "not": {}
-                },
-                "": {
-                    "description": "Environment names must consist of alphanumeric characters, underscores, or hyphens.",
-                    "not": {}
                 }
-            }
-        }
+            },
+            "additionalProperties": false
+		}
     }
 }
