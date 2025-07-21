@@ -1,0 +1,49 @@
+{
+  "name": "@jaronline/blockenv",
+  "version": "1.0.0",
+  "description": "Minecraft modpack testing environment CLI",
+  "bin": "bin/blockenv",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "bin",
+    "assets"
+  ],
+  "scripts": {
+    "bump": "cliff-jumper",
+    "check-update": "cliff-jumper --dry-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jaronline/BlockEnv.git"
+  },
+  "keywords": [
+    "cli",
+    "command",
+    "commandline",
+    "tool",
+    "minecraft",
+    "modpack",
+    "test",
+    "testing"
+  ],
+  "author": "Jaron Zijlstra",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/Jaronline/BlockEnv/issues"
+  },
+  "homepage": "https://github.com/Jaronline/BlockEnv#readme",
+  "publishConfig": {
+    "provenance": true,
+    "access": "public",
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "devDependencies": {
+    "@favware/cliff-jumper": "^6.0.0",
+    "@types/node": "^22.15.29"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "unzipper": "^0.12.3"
+  }
+}

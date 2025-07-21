@@ -1,11 +1,19 @@
 name: Publish
+run-name: Publish @jaronline/${{ inputs.package }}
 
 on:
   workflow_dispatch:
+    inputs:
+      package:
+        description: The name of the package to release
+        required: true
+        type: choice
+        options:
+          - blockenv
 
 jobs:
   PublishPackage:
-    name: Publish @jaronline/blockenv
+    name: Publish @jaronline/${{ inputs.package }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -25,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
       - name: Publish to NPM
-        working-directory: ${{ inputs.working-directory }}
+        working-directory: packages/${{ inputs.package }}
         run: |
           yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
           yarn config set npmPublishRegistry "https://registry.yarnpkg.com"

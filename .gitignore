@@ -3,9 +3,6 @@
 .vscode/
 .vs/
 
-# Testing environment
-/env/
-
 # Yarn files
 .yarn/install-state.gz
 .yarn/build-state.yml
