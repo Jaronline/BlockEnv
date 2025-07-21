@@ -5,7 +5,13 @@
 		"client": {
 			"name": "Client Environment",
 			"type": "client",
-			"path": "client"
+			"path": "client",
+			"arguments": {
+				"jvm": [
+					"-Xms4G",
+					"-Xmx8G"
+				]
+			}
 		},
 		"client2": {
 			"name": "Client Environment 2",
