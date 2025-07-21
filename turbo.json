@@ -1,0 +1,13 @@
+{
+	"$schema": "https://turborepo.com/schema.v2.json",
+	"tasks": {
+		"bump": {
+			"dependsOn": [],
+			"outputs": ["CHANGELOG.md"]
+		},
+		"check-update": {
+			"dependsOn": [],
+			"outputs": []
+		}
+	}
+}
