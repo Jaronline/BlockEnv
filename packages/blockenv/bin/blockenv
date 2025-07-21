@@ -17,4 +17,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 "use strict";
-require("../dist");
+
+const createProgram = require("../dist");
+
+const program = createProgram();
+
+try {
+    program.parse(process.argv);
+} catch (error) {
+    program.error(error instanceof Error ? error.message : error);
+}

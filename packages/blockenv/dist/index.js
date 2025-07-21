@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**!
 BlockEnv: Minecraft Java testing environment for modpacks.
 Copyright (C) 2025 Jaronline
@@ -20,10 +19,6 @@ const { Program, getConfig, createAllCurlStrategy } = require("./lib");
 const { version } = require("../package.json");
 const Option = require("./lib/Option");
 
-const program = new Program("blockenv")
-    .description("a Minecraft modpack testing environment CLI")
-    .version(version);
-
 function checkForDeprecatedOptions(command) {
 	const optionKeys = Object.keys(command.opts());
 	if (optionKeys.length !== 0) {
@@ -36,20 +31,26 @@ function checkForDeprecatedOptions(command) {
 	}
 }
 
-try {
-    program
-		.config(getConfig())
-		.allDownloadStrategy(createAllCurlStrategy())
-		.hook("preAction", (thisCommand, actionCommand) => {
-			checkForDeprecatedOptions(thisCommand);
-			checkForDeprecatedOptions(actionCommand);
-		});
+module.exports = function createProgram() {
+	const program = new Program("blockenv")
+		.description("a Minecraft modpack testing environment CLI")
+		.version(version);
 
-    require("./commands/clean").loadCommands(program);
-    require("./commands/setup").loadCommands(program);
-    require("./commands/launch").loadCommands(program);
+	try {
+		program
+			.config(getConfig())
+			.allDownloadStrategy(createAllCurlStrategy())
+			.hook("preAction", (thisCommand, actionCommand) => {
+				checkForDeprecatedOptions(thisCommand);
+				checkForDeprecatedOptions(actionCommand);
+			});
 
-    program.parse(process.argv);
-} catch (error) {
-    program.error(error instanceof Error ? error.message : error);
+		require("./commands/clean").loadCommands(program);
+		require("./commands/setup").loadCommands(program);
+		require("./commands/launch").loadCommands(program);
+	} catch (e) {
+		program.error(e instanceof Error ? e.message : e);
+	}
+
+	return program;
 }
