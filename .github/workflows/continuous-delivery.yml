@@ -28,6 +28,10 @@ jobs:
     if: github.repository_owner == 'jaronline'
     permissions:
       id-token: write
+    strategy:
+      matrix:
+        package:
+          - blockenv
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,6 +47,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
       - name: Bump version & publish
+        working-directory: packages/${{ matrix.package }}
         run: |
           # Resolve the tag to be used. "next" for push events, "pr-{prNumber}" for dispatch events.
           TAG=$([[ ${{ github.event_name }} == 'push' ]] && echo 'next' || echo 'pr-${{ inputs.pr-number }}')
