@@ -18,7 +18,7 @@ BlockEnv is an environment manager for testing Minecraft modpacks. It locally in
 ### Features
 
 - Launching a (modded) Minecraft server locally.
-- Launcing a (modded) Minecraft client that can join the server.
+- Launching a (modded) Minecraft client that can join the server.
 - Automatic installing of the (modded) Minecraft server.
 - Automatic installing of the (modded) Minecraft client.
 - Cleaning of all environments.
