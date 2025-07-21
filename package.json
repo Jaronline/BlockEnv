@@ -16,5 +16,9 @@
 		"@types/node": "^22.15.29",
 		"turbo": "^2.5.5"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Jaronline/BlockEnv.git"
+	},
 	"packageManager": "yarn@4.9.1"
 }
