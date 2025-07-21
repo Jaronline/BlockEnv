@@ -20,6 +20,7 @@ const {ModLoader} = require("./ModLoader");
 module.exports.Environment = class Environment {
     #data;
 	#loader;
+	#arguments = new Map();
 
     constructor(data) {
         this.#data = data;
@@ -27,6 +28,12 @@ module.exports.Environment = class Environment {
 
 		if (data.loader) {
 			this.#loader = new ModLoader(data.loader);
+		}
+
+		if (data.arguments) {
+			this.#arguments = new Map(
+				Object.entries(data.arguments)
+			);
 		}
     }
 
@@ -48,6 +55,10 @@ module.exports.Environment = class Environment {
 
 	get loader() {
 		return this.#loader ?? null;
+	}
+
+	get arguments() {
+		return this.#arguments;
 	}
 
     #validateData(data = this.#data) {

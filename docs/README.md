@@ -48,17 +48,18 @@ In environments you can specify configurations for your client and server enviro
 
 ### Common properties
 
-| Name   | Type                                  | Description                                                                               |
-|--------|---------------------------------------|-------------------------------------------------------------------------------------------|
-| name   | string                                | The name of your environment, used in logs.                                               |
-| type   | [environment type](#environment-type) | The type of environment, can be either "client" or "server".                              |
-| path   | string                                | The path to the environment installation. This path is resolved from [baseDir](#basedir). |
-| loader | [loader](#loader)                     | The mod loader information for this environment.                                          |
+| Name      | Type                                                   | Description                                                                               |
+|-----------|--------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| name      | string                                                 | The name of your environment, used in logs.                                               |
+| type      | [environment type](#environment-type)                  | The type of environment, can be either "client" or "server".                              |
+| path      | string                                                 | The path to the environment installation. This path is resolved from [baseDir](#basedir). |
+| loader    | [loader](#loader)                                      | The mod loader information for this environment.                                          |
+| arguments | [environment arguments](#environment-arguments) object | The arguments to pass to the environment when starting it.                                |
 
 ### Client properties
 
-| Name       | Type   | Description                                                                     |
-|------------|--------|---------------------------------------------------------------------------------|
+| Name       | Type   | Description                                                                         |
+|------------|--------|-------------------------------------------------------------------------------------|
 | playerName | string | The name of the player for the environment. This is used as the Minecraft username. |
 
 # Reference
@@ -71,6 +72,12 @@ In environments you can specify configurations for your client and server enviro
 |---------|--------|--------------------------------|
 | name    | string | The name of the mod loader.    |
 | version | string | The version of the mod loader. |
+
+### Environment Arguments
+
+| Name  | Type             | Description                                                                                                     |
+|-------|------------------|-----------------------------------------------------------------------------------------------------------------|
+| jvm   | array of strings | The JVM arguments to pass to the environment (currently only available in environments with the "client" type). |
 
 ## Enums
 

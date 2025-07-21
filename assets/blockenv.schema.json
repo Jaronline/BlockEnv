@@ -58,6 +58,20 @@
 								"name",
 								"version"
 							]
+						},
+						"arguments": {
+							"description": "Additional arguments for the environment.",
+							"type": "object",
+							"properties": {
+								"jvm": {
+									"description": "JVM arguments for the environment.",
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"additionalProperties": false
 						}
 					},
 					"allOf": [
@@ -76,6 +90,14 @@
 									"playerName": {
 										"description": "Player name can only be specified for client environments.",
 										"not": {}
+									},
+									"arguments": {
+										"properties": {
+											"jvm": {
+												"description": "Server JVM arguments are currently not supported.",
+												"not": {}
+											}
+										}
 									}
 								}
 							}

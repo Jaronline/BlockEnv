@@ -53,9 +53,11 @@ module.exports.launchClient = async function(cliVersion, options, config) {
     });
     const jvmArgs = versionJSON.arguments.jvm.map(arg => subsitute(arg));
     const gameArgs = versionJSON.arguments.game.map(arg => subsitute(arg));
+	const customJvmArgs = environment.arguments.get("jvm")?.map(arg => subsitute(arg));
 
     await spawnAsync("java", [
         ...jvmArgs,
+		...customJvmArgs,
         mainClass,
         ...gameArgs
     ], { cwd: installDir });
