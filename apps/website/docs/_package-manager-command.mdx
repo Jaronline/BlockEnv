@@ -1,0 +1,5 @@
+import PMTabs from "./_package-manager-tabs.mdx";
+
+<PMTabs
+    { ...(props.groupId || props.groupId === undefined ? {groupId: props.groupId ?? "package-manager-command"} : {}) }
+    npm={`npx ${props.command}`} yarn={`yarn run ${props.command}`} pnpm={`pnpm exec ${props.command}`} />

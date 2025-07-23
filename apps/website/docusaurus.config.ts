@@ -6,11 +6,12 @@ const Title = 'BlockEnv';
 const Description = 'Minecraft Java testing environment for modpacks';
 const Email = 'info@jaronline.dev';
 const BaseUrl = 'https://jaronline.github.io';
+const GithubUrl = 'https://github.com/Jaronline/BlockEnv';
 
 const config: Config = {
 	title: Title,
 	tagline: Description,
-	favicon: 'img/favicon.ico',
+	favicon: 'icons/favicon.ico',
 	future: {
 		v4: true,
 	},
@@ -31,7 +32,7 @@ const config: Config = {
 				docs: {
 					sidebarPath: './sidebars.ts',
 					editUrl:
-					  'https://github.com/Jaronline/BlockEnv/edit/main/apps/website/',
+					  `${GithubUrl}/edit/main/apps/website/`,
 				},
 				blog: false,
 				theme: {
@@ -48,9 +49,13 @@ const config: Config = {
 			respectPrefersColorScheme: true
 		},
 		metadata: [
+			{ name: 'apple-mobile-web-app-capable', content: 'yes' },
+			{ name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+			{ name: 'apple-mobile-web-app-title', content: Title },
 			{ name: 'application-name', content: Title },
 			{ name: 'author', content: `Jaronline, ${Email}` },
 			{ name: 'description', content: Description },
+			{ name: 'theme-color', content: "#5BA358" },
 			{ name: 'url', content: BaseUrl },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{ property: 'og:description', content: Description },
@@ -69,8 +74,15 @@ const config: Config = {
 			},
 			items: [
 				{
-					href: 'https://github.com/Jaronline/BlockEnv',
-					label: 'GitHub',
+					to: "docs/getting-started",
+					label: "Docs",
+					"aria-label": "Documentation",
+					position: "right"
+				},
+				{
+					href: GithubUrl,
+					"aria-label": 'GitHub repository',
+					className: 'github-link',
 					position: 'right',
 				},
 			],
@@ -86,6 +98,55 @@ const config: Config = {
 			darkTheme: prismThemes.dracula,
 		},
 	} satisfies Preset.ThemeConfig,
+	plugins: [
+		[
+			"@docusaurus/plugin-pwa",
+			{
+				debug: true,
+				offlineModeActivationStrategies: [
+					'appInstalled',
+					'standalone',
+					'queryString',
+				],
+				pwaHead: [
+					{
+						tagName: "link",
+						rel: "icon",
+						type: "image/png",
+						href: "/icons/favicon-96.png",
+						sizes: "96x96"
+					},
+					{
+						tagName: "link",
+						rel: "icon",
+						type: "image/svg+xml",
+						href: "/icons/favicon.svg"
+					},
+					{
+						tagName: "link",
+						rel: "shortcut icon",
+						href: "/icons/favicon.ico"
+					},
+					{
+						tagName: "link",
+						rel: "apple-touch-icon",
+						href: "/icons/apple-touch-icon.png",
+						sizes: "180x180"
+					},
+					{
+						tagName: "link",
+						rel: "manifest",
+						href: "/manifest.json"
+					},
+					{
+						tagName: "meta",
+						name: "theme-color",
+						content: "#5BA358"
+					}
+				]
+			}
+		]
+	]
 };
 
 export default config;

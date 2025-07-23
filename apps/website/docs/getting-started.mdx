@@ -1,0 +1,67 @@
+import PMTabs from "./_package-manager-tabs.mdx";
+import CommandTabs from "./_package-manager-command.mdx";
+
+# Getting Started
+
+## Requirements
+
+To use BlockEnv, you will need to have [Node.js](https://nodejs.org/en) installed on your system.
+
+## Installation
+
+To get started with BlockEnv, you can install it in your project using a package manager like npm or yarn using the following command:
+
+<PMTabs npm="npm install --save-dev --save-exact @jaronline/blockenv" yarn="yarn add --dev --exact @jaronline/blockenv"
+    pnpm="pnpm add --save-dev --save-exact @jaronline/blockenv" />
+
+## Configuration
+
+After installing BlockEnv, you need to create a configuration file in your project root directory.
+This configuration file should be named `blockenv.config.json` and should contain at least the following structure:
+
+```json
+{
+  "baseDir": "environment"
+}
+```
+
+Replace `"environment"` with the path to the directory where you want to store your BlockEnv environments.
+
+## Running environments
+
+There are two types of environments you can run with BlockEnv: clients and servers.
+Client environments are used for testing a modpack in the Minecraft client, while server environments are used for testing a modded Minecraft server.
+
+### Running a client environment
+
+To run the basic client environment, you will first need to set it up using the following command:
+
+<CommandTabs command="blockenv setup --side client --loader MOD_LOADER --loader-version MOD_LOADER_VERSION" />
+
+This will download the necessary files and set up the environment for you.
+This may take a few minutes depending on your internet connection.
+
+After the setup is complete, you can run the client environment using:
+
+<CommandTabs command="blockenv launch --side client --profile PROFILE_NAME" />
+
+See `launcher_profiles.json` in your environment directory (`client`) for available profiles.
+
+### Running a server environment
+
+To run the basic server environment, you will first need to set it up using the following command:
+
+<CommandTabs command="blockenv setup --side server --loader MOD_LOADER --loader-version MOD_LOADER_VERSION" />
+
+This will download the necessary files and set up the environment for you.
+This may take a few minutes depending on your internet connection.
+
+After the setup is complete, you can run the server environment using:
+
+<CommandTabs command="blockenv launch --side server" />
+
+## Global installation
+
+The BlockEnv CLI can be installed globally using `npm install --global @jaronline/blockenv`.
+This allows you to run the `blockenv` command from anywhere in your terminal.
+However, you will still need to configure your project with a configuration file.
