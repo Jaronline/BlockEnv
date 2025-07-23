@@ -6,6 +6,10 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
 import styles from './index.module.css';
 
 function HomepageHeader() {
@@ -18,6 +22,19 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <div className={styles.heroInstallTabs}>
+            <Tabs className={styles.heroInstallTabs}>
+              <TabItem value="npm">
+                  <CodeBlock>npm install @jaronline/blockenv</CodeBlock>
+              </TabItem>
+              <TabItem value="yarn">
+                  <CodeBlock>yarn add @jaronline/blockenv</CodeBlock>
+              </TabItem>
+              <TabItem value="pnpm">
+                  <CodeBlock>pnpm add @jaronline/blockenv</CodeBlock>
+              </TabItem>
+            </Tabs>
+          </div>
       </div>
     </header>
   );
