@@ -16,7 +16,7 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className={clsx("container", styles.heroContainer)}>
-        <img src="img/logo.svg" />
+        <img src="img/logo.svg" alt="BlockEnv logo" />
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>

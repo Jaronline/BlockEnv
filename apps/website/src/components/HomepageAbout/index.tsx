@@ -37,7 +37,7 @@ export default function HomepageAbout() {
             <div className="container">
                 <div className={clsx('row', styles.rowCenter)}>
                     {AboutList.map((props, idx) => (
-                        <About key={idx} {...props} />
+                        <About key={props.title} {...props} />
                     ))}
                 </div>
             </div>

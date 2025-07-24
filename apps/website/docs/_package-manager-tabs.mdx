@@ -2,7 +2,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
-<Tabs { ...(props.groupId || props.groupId === undefined ? {groupId: props.groupId ?? "package-manager"} : {}) }>
+<Tabs groupId={props.groupId ?? "package-manager"}>
     <TabItem value="npm" default>
         <CodeBlock>{props.npm}</CodeBlock>
     </TabItem>
