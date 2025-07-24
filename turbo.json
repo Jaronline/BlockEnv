@@ -8,6 +8,12 @@
 		"check-update": {
 			"dependsOn": [],
 			"outputs": []
+		},
+		"@jaronline/blockenv-website#start": {
+			"dependsOn": [],
+			"cache": false,
+			"persistent": true,
+			"outputLogs": "full"
 		}
 	}
 }

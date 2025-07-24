@@ -1,0 +1,15 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs groupId={props.groupId ?? "package-manager"}>
+    <TabItem value="npm" default>
+        <CodeBlock>{props.npm}</CodeBlock>
+    </TabItem>
+    <TabItem value="yarn">
+        <CodeBlock>{props.yarn}</CodeBlock>
+    </TabItem>
+    <TabItem value="pnpm">
+        <CodeBlock>{props.pnpm}</CodeBlock>
+    </TabItem>
+</Tabs>
