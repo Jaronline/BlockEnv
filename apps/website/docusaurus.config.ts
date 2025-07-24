@@ -88,12 +88,44 @@ const config: Config = {
 			],
 		},
 		footer: {
-			style: 'dark',
-			links: [],
+			links: [
+				{
+					title: "Docs",
+					items: [
+						{
+							label: "Getting Started",
+							to: "/docs/getting-started",
+						}
+					]
+				},
+				{
+					title: "More",
+					items: [
+						{
+							label: "Github",
+							href: GithubUrl,
+						},
+						{
+							label: "NPM",
+							href: "https://npmjs.com/package/@jaronline/blockenv",
+						},
+						{
+							label: "Discord",
+							href: "https://discord.gg/VXUYxrB5dJ"
+						}
+					]
+				}
+			],
+			logo: {
+				alt: `${Title} Logo`,
+				src: 'img/logo-text.svg',
+				height: 50,
+			},
 			copyright: `Copyright © ${new Date().getFullYear()} Jaronline.`,
 		},
 		prism: {
 			defaultLanguage: 'bash',
+			additionalLanguages: ["json"],
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula,
 		},

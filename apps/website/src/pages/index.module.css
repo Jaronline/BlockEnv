@@ -10,8 +10,16 @@
   overflow: hidden;
 }
 
+.heroInstallTabsContainer {
+    display: flex;
+    justify-content: center;
+}
+
 .heroInstallTabs {
-    justify-self: center;
+    justify-content: center;
+    --ifm-tabs-color: var(--ifm-hero-text-color);
+    --ifm-tabs-color-active: var(--ifm-hero-text-color);
+    --ifm-tabs-color-active-border: var(--ifm-tabs-color-active);
 }
 
 @media screen and (max-width: 996px) {

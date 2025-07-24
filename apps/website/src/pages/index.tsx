@@ -1,11 +1,10 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageAbout from "@site/src/components/HomepageAbout";
 import Heading from '@theme/Heading';
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -16,14 +15,14 @@ function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
+      <div className={clsx("container", styles.heroContainer)}>
         <img src="img/logo.svg" />
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.heroInstallTabs}>
-            <Tabs className={styles.heroInstallTabs}>
+          <div className={styles.heroInstallTabsContainer}>
+            <Tabs className={styles.heroInstallTabs} lazy>
               <TabItem value="npm">
                   <CodeBlock>npm install @jaronline/blockenv</CodeBlock>
               </TabItem>
@@ -48,6 +47,7 @@ export default function Home(): ReactNode {
       description={siteConfig.tagline}>
       <HomepageHeader />
       <main>
+        <HomepageAbout />
         <HomepageFeatures />
       </main>
     </Layout>
