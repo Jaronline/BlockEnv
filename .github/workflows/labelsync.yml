@@ -7,3 +7,5 @@ on:
 jobs:
   labelsync:
     uses: Jaronline/.github/.github/workflows/reusable-labelsync.yml@main
+    with:
+      repository: Jaronline/BlockEnv

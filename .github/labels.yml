@@ -1,0 +1,8 @@
+extends: "Jaronline/.github:.github/labels.yml"
+labels:
+  - name: "apps:website"
+    description: "Issues related to the BlocKEnv website"
+    color: "f1c40f"
+  - name: "packages:@jaronline/blockenv"
+    description: "Issues related to the @jaronline/blockenv package"
+    color: "3498db"
