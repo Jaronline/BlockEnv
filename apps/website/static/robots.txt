@@ -1,0 +1,4 @@
+# https://www.robotstxt.org/robotstxt.html
+Sitemap: https://blockenv.jaronline.dev/sitemap.xml
+User-agent: *
+Disallow:
