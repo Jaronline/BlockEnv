@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const Title = 'BlockEnv';
 const Description = 'Minecraft Java testing environment for modpacks';
 const Email = 'info@jaronline.dev';
-const BaseUrl = 'https://jaronline.github.io';
+const BaseUrl = 'https://blockenv.jaronline.dev';
 const GithubUrl = 'https://github.com/Jaronline/BlockEnv';
 
 const config: Config = {
@@ -16,7 +16,7 @@ const config: Config = {
 		v4: true,
 	},
 	url: BaseUrl,
-	baseUrl: '/BlockEnv/',
+	baseUrl: '/',
 	organizationName: 'Jaronline',
 	projectName: 'BlockEnv',
 	onBrokenLinks: 'throw',
