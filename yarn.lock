@@ -3403,6 +3403,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     typescript: "npm:~5.6.2"
+    wrangler: "npm:^4.28.1"
   languageName: unknown
   linkType: soft
 
@@ -11063,25 +11064,6 @@ __metadata:
   checksum: 10c0/5120171d4bdb1577764c5afa96e413353bff530d1b37081cb29cccc747f989eb1baf40574fe8e27060fc1aef72b59c042f72b9b208413de33bcf411343c69057
   languageName: node
   linkType: hard
-
-"my-docusaurus-app@workspace:apps/my-docusaurus-app":
-  version: 0.0.0-use.local
-  resolution: "my-docusaurus-app@workspace:apps/my-docusaurus-app"
-  dependencies:
-    "@docusaurus/core": "npm:3.8.1"
-    "@docusaurus/module-type-aliases": "npm:3.8.1"
-    "@docusaurus/preset-classic": "npm:3.8.1"
-    "@docusaurus/tsconfig": "npm:3.8.1"
-    "@docusaurus/types": "npm:3.8.1"
-    "@mdx-js/react": "npm:^3.0.0"
-    clsx: "npm:^2.0.0"
-    prism-react-renderer: "npm:^2.3.0"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
-    typescript: "npm:~5.6.2"
-    wrangler: "npm:^4.28.1"
-  languageName: unknown
-  linkType: soft
 
 "nanoid@npm:^3.3.11":
   version: 3.3.11
