@@ -125,7 +125,7 @@ const config: Config = {
 		},
 		prism: {
 			defaultLanguage: 'bash',
-			additionalLanguages: ["json"],
+			additionalLanguages: ["json", "json5"],
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula,
 		},
