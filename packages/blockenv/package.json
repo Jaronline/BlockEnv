@@ -33,7 +33,7 @@
 	"bugs": {
 		"url": "https://github.com/Jaronline/BlockEnv/issues"
 	},
-	"homepage": "https://github.com/Jaronline/BlockEnv#readme",
+	"homepage": "https://blockenv.jaronline.dev",
 	"publishConfig": {
 		"provenance": true,
 		"access": "public",
