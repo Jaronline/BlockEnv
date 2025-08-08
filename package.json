@@ -6,7 +6,6 @@
 		"apps/*"
 	],
 	"scripts": {
-		"docs:cli": "cd scripts && node generate-cli-docs.mjs",
 		"check-update": "turbo run check-update"
 	},
 	"devDependencies": {
