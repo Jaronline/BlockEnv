@@ -1,6 +1,8 @@
 <div align="center">
 
-<img width="256" src="packages/blockenv/icon.png" alt="BlockEnv logo">
+<a href="https://blockenv.jaronline.dev">
+    <img width="256" src="https://blockenv.jaronline.dev/img/logo.svg" alt="BlockEnv logo">
+</a>
 
 # BlockEnv
 
