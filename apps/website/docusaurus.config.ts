@@ -42,8 +42,7 @@ const config: Config = {
 		],
 	],
 	themeConfig: {
-		// Replace with your project's social card
-		image: 'img/docusaurus-social-card.jpg',
+		image: 'icons/opengraph.jpg',
 		colorMode: {
 			defaultMode: 'dark',
 			respectPrefersColorScheme: true
@@ -60,6 +59,9 @@ const config: Config = {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{ property: 'og:description', content: Description },
 			{ property: 'og:email', content: Email },
+			{ property: 'og:image:alt', content: 'OpenGraphImage' },
+			{ property: 'og:image:height', content: '630' },
+			{ property: 'og:image:width', content: '1200' },
 			{ property: 'og:locale', content: "en_US" },
 			{ property: 'og:site_name', content: Title },
 			{ property: 'og:title', content: Title },
