@@ -13363,6 +13363,7 @@ __metadata:
     "@favware/cliff-jumper": "npm:^6.0.0"
     "@favware/npm-deprecate": "npm:^2.0.0"
     "@types/node": "npm:^22.15.29"
+    strip-ansi: "npm:^7.1.0"
     turbo: "npm:^2.5.5"
   languageName: unknown
   linkType: soft
@@ -14255,7 +14256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^7.0.1":
+"strip-ansi@npm:^7.0.1, strip-ansi@npm:^7.1.0":
   version: 7.1.0
   resolution: "strip-ansi@npm:7.1.0"
   dependencies:

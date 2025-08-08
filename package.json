@@ -6,6 +6,7 @@
 		"apps/*"
 	],
 	"scripts": {
+		"docs:cli": "cd scripts && node generate-cli-docs.mjs",
 		"check-update": "turbo run check-update"
 	},
 	"devDependencies": {
@@ -15,6 +16,7 @@
 		"@favware/cliff-jumper": "^6.0.0",
 		"@favware/npm-deprecate": "^2.0.0",
 		"@types/node": "^22.15.29",
+		"strip-ansi": "^7.1.0",
 		"turbo": "^2.5.5"
 	},
 	"repository": {
