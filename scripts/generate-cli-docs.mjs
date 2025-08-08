@@ -12,14 +12,26 @@ if (!existsSync(outputDir)) {
 
 const rootProgram = createProgram();
 
-await Promise.all(
-    [rootProgram, ...rootProgram.commands]
-        .map(command => ({command, help: command.createHelp()}))
-        .map(({ command, help }) => ({ command, output: help.formatHelp(command, help) }))
-        .map(({ command, output }) => ({
-            destURL: new URL(`./${command.name()}.md`, outputDir), content: stripAnsi(output.trim()) }))
-        .map(({ destURL, content }) => ({
-            destURL, mdContent: "```bash\n" + content + "\n```" }))
-        .map(({ destURL, mdContent }) =>
-            writeFile(destURL, mdContent, { encoding: "utf-8" }))
+const results = await Promise.all(
+    [rootProgram, ...rootProgram.commands].map(async command => {
+        try {
+            const help = command.createHelp();
+            const output = help.formatHelp(command, help);
+            const destURL = new URL(`./${command.name()}.md`, outputDir);
+            const content = stripAnsi(output.trim());
+            const mdContent = "```bash\n" + content + "\n```";
+            await writeFile(destURL, mdContent, { encoding: "utf-8" });
+            return { command: command.name(), success: true };
+        } catch (err) {
+            console.error(`Error processing command '${command.name()}':`, err);
+            return { command: command.name(), success: false, error: err };
+        }
+    })
 );
+
+// Optionally, check for errors and exit with non-zero code if any failed
+const failed = results.filter(r => !r.success);
+if (failed.length > 0) {
+    console.error(`\n${failed.length} command(s) failed to generate help docs.`);
+    process.exit(1);
+}
