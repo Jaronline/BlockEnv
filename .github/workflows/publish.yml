@@ -10,6 +10,11 @@ on:
         type: choice
         options:
           - blockenv
+      skip-automatic-bump:
+        description: Whether to skip the automatic bumping of the package version
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   PublishPackage:
@@ -32,6 +37,25 @@ jobs:
         run: corepack enable
       - name: Install dependencies
         run: yarn install --immutable
+      - name: Configure Git
+        run: |
+          git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
+          git config --local user.email "${GITHUB_EMAIL}"
+          git config --local user.name "${GITHUB_USER}"
+        env:
+          GITHUB_USER: github-actions[bot]
+          GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump Versions and make release
+        working-directory: packages/${{ inputs.package }}
+        run: |
+          if [ "${{ inputs.skip-automatic-bump }}" = "true" ]; then
+            yarn bump --skip-automatic-bump
+          else
+            yarn bump
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to NPM
         working-directory: packages/${{ inputs.package }}
         run: |
