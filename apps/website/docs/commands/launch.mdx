@@ -1,0 +1,65 @@
+---
+sidebar_label: launch
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# blockenv launch
+
+:::note
+
+To be able to run the `launch` command, you will first need to set up a BlockEnv environment using the [`blockenv setup`](setup) command.
+
+:::
+
+## Examples
+
+Display the help message for the `launch` command:
+
+```bash
+blockenv launch --help
+```
+
+Launch the NeoForge profile in the BlockEnv client environment
+(this is the default profile for NeoForge installations):
+
+```bash
+blockenv launch --side client --profile NeoForge
+```
+
+Launch the BlockEnv server environment
+
+```bash
+blockenv launch --side server
+```
+
+Launch the BlockEnv client environment with a custom player name:
+
+```bash
+blockenv launch --side client --profile NeoForge --player-name CustomPlayerName
+```
+
+Launch the NeoForge profile in the BlockEnv client environment named `client-env`.
+(This requires a `blockenv.config.json` configuration file)
+
+<Tabs>
+    <TabItem value="command" label="Command" default>
+        ```bash
+        blockenv launch --environment client-env --profile NeoForge
+        ```
+    </TabItem>
+    <TabItem value="config" label="blockenv.config.json">
+        ```json5
+        {
+            // ...
+            "environments": {
+                "client-env": {
+                    // ...
+                }
+            }
+            // ...
+        }
+        ```
+    </TabItem>
+</Tabs>
