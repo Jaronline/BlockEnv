@@ -1,0 +1,82 @@
+---
+sidebar_label: clean
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# blockenv clean
+
+:::warning
+
+This command will remove configurations and mods. Use with caution.
+
+:::
+
+## Description
+
+Cleans up the BlockEnv client environment by removing files and directories.
+This is useful for resetting the environment or freeing up space.
+The following items are removed when this command is executed
+(`*` indicates all files and directories within the specified directory):
+
+- config/*
+- defaultconfigs/*
+- downloads/* (client-side only)
+- logs/*
+- mods/*
+- resourcepacks/* (client-side only)
+- shaderpacks/* (client-side only)
+- world/ (server-side only)
+- options.txt (client-side only)
+- servers.dat (client-side only)
+- servers.dat_old (client-side only)
+- usercache.json
+- usernamecache.json
+- whitelist.json (server-side only)
+- ops.json (server-side only)
+- banned-ips.json (server-side only)
+- banned-players.json (server-side only)
+
+## Examples
+
+Display the help message for the `clean` command:
+
+```bash
+blockenv clean --help
+```
+
+Clean up the BlockEnv client environment.
+
+```bash
+blockenv clean --side client
+```
+
+Clean up the BlockEnv server environment.
+
+```bash
+blockenv clean --side server
+```
+
+Clean up a BlockEnv environment named `myenv`. (This requires a `blockenv.config.json` configuration file)
+
+<Tabs>
+    <TabItem value="command" label="Command" default>
+        ```bash
+        blockenv clean --environment myenv
+        ```
+    </TabItem>
+    <TabItem value="config" label="blockenv.config.json">
+        ```json5
+        {
+            // ...
+            "environments": {
+                "myenv": {
+                    // ...
+                }
+            }
+            // ...
+        }
+        ```
+    </TabItem>
+</Tabs>
