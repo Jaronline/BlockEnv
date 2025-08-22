@@ -5,6 +5,15 @@ type: Bug
 labels: ["bug"]
 
 body:
+  - type: dropdown
+    id: application_or_package
+    attributes:
+      label: Which application or package is this bug report for?
+      options:
+        - blockenv
+        - Documentation
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: |
