@@ -38,27 +38,26 @@ function customFormat(command) {
 
     const optionGroups = help.groupItems(command.options, help.visibleOptions(command), (option) => option.helpGroupHeading ?? "Options:");
     if (optionGroups.size > 0) {
-        md += "| Option | Description |\n";
-        md += "|--------|-------------|\n";
         optionGroups.forEach((options, group) => {
-                md += options.map( (option) => {
-                    return `| ${help.optionTerm(option)} | ${help.optionDescription(option)} |`
-                }).join("\n");
-            }
-        )
-        md += "\n\n";
+            md += `### ${group.replace(/(.*):/, "$1")}\n\n`;
+            md += "| Option | Description |\n";
+            md += "|--------|-------------|\n";
+            md += options.map( (option) => {
+                return `| ${help.optionTerm(option)} | ${help.optionDescription(option)} |`
+            }).join("\n") + "\n\n";
+        });
     }
 
     const commandGroups = help.groupItems(command.commands, help.visibleCommands(command), (sub) => sub.helpGroup() || "Commands:");
     if (commandGroups.size > 0) {
-        md += "| Sub Command | Description |\n";
-        md += "|--------|-----------------|\n";
         commandGroups.forEach((commands,group) => {
+            md += `### ${group.replace(/(.*):/, "$1")}\n\n`;
+            md += "| Sub Command | Description |\n";
+            md += "|--------|-----------------|\n";
             md += commands.map( (sub) => {
                 return `| ${help.subcommandTerm(sub)} | ${help.subcommandDescription(sub)}|`
-            }).join("\n");
-        })
-        md += "\n\n";
+            }).join("\n") + "\n\n";
+        });
     }
 
     return md.replaceAll("<","&lt;").replaceAll(">","&gt;");
