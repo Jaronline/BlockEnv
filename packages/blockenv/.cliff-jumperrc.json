@@ -12,5 +12,5 @@
     "gitRepo": "jaronline/blockenv",
     "gitHostVariant": "github",
     "gitToken": "TRY_AGAIN_LATER",
-    "tagTemplate": "v{{new-version}}"
+    "tagTemplate": "{{name}}@{{new-version}}"
 }
