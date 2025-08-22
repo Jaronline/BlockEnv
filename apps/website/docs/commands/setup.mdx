@@ -1,0 +1,85 @@
+---
+sidebar_label: setup
+---
+
+import SetupHelp from "./_generated_help/setup.md";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# blockenv setup
+
+<SetupHelp />
+
+## Examples
+
+Display the help message for the `setup` command:
+
+```bash
+blockenv setup --help
+```
+
+Set up a new BlockEnv client environment with NeoForge loader version 21.1.173 for Minecraft 1.21.1:
+
+```bash
+blockenv setup --side client --loader neoforge --loader-version 21.1.173 --minecraft-version 1.21.1
+```
+
+By using the `--new-setup-order` flag, you can set up a new BlockEnv server environment without the need to specify
+the Minecraft version, as it will infer the version from the loader:
+
+```bash
+blockenv setup --side server --loader neoforge --loader-version 21.1.173 --new-setup-order
+```
+
+When using the `--environment` flag, you don't need to specify the loader and loader version as long as this
+configuration is present in your configuration file (e.g., `blockenv.config.json`):
+
+<Tabs>
+    <TabItem value="command" label="Command" default>
+        ```bash
+        blockenv setup --environment client --minecraft-version 1.21.1
+        ```
+    </TabItem>
+    <TabItem value="config" label="blockenv.config.json">
+        ```json5
+        {
+            // ...
+            "environments": {
+                "client": {
+                    // ...
+                    "loader": {
+                        "name": "neoforge",
+                        "version": "21.1.173"
+                    }
+                    // ...
+                }
+            }
+            // ...
+        }
+        ```
+    </TabItem>
+</Tabs>
+
+The `--environment` flag can also be used in combination with the `--new-setup-order` flag to set up a new BlockEnv
+server environment:
+
+<Tabs>
+    <TabItem value="command" label="Command" default>
+        ```bash
+        blockenv setup --environment server --loader neoforge --loader-version 21.1.173 --new-setup-order
+        ```
+    </TabItem>
+    <TabItem value="config" label="blockenv.config.json">
+        ```json5
+        {
+            // ...
+            "environments": {
+                "server": {
+                    // ...
+                }
+            }
+            // ...
+        }
+        ```
+    </TabItem>
+</Tabs>
