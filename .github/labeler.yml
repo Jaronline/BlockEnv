@@ -1,0 +1,10 @@
+apps:website:
+  - changed-files:
+      - any-glob-to-any-file:
+          - apps/website/*
+          - apps/website/**/*
+packages:@jaronline/blockenv:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/blockenv/*
+          - packages/blockenv/**/*
