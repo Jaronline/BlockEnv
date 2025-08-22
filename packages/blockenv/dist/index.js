@@ -33,7 +33,7 @@ function checkForDeprecatedOptions(command) {
 
 module.exports = function createProgram() {
 	const program = new Program("blockenv")
-		.description("a Minecraft modpack testing environment CLI")
+		.description("Minecraft Java testing environment for modpacks")
 		.version(version);
 
 	try {
