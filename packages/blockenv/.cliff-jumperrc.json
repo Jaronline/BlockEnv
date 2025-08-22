@@ -4,7 +4,7 @@
     "install": true,
     "packagePath": ".",
     "org": "jaronline",
-    "monoRepo": false,
+    "monoRepo": true,
     "identifierBase": false,
     "pushTag": true,
     "githubRelease": true,
