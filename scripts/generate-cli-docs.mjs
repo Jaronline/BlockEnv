@@ -55,7 +55,7 @@ function customFormat(command) {
             md += "| Sub Command | Description |\n";
             md += "|--------|-----------------|\n";
             md += commands.map( (sub) => {
-                return `| ${help.subcommandTerm(sub)} | ${help.subcommandDescription(sub)}|`
+                return `| ${help.subcommandTerm(sub)} | ${help.subcommandDescription(sub)} |`
             }).join("\n") + "\n\n";
         });
     }
