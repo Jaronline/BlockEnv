@@ -24,11 +24,18 @@ jobs:
       id-token: write
       contents: write
     steps:
+      - name: Create App Token
+        uses: actions/create-github-app-token@v2
+        id: create-token
+        with:
+          app-id: ${{ secrets.CI_APP_ID }}
+          private-key: ${{ secrets.CI_APP_PRIVATE_KEY }}
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ steps.create-token.outputs.token }}
       - name: Use Node.js v20
         uses: actions/setup-node@v4
         with:
@@ -39,13 +46,11 @@ jobs:
         run: yarn install --immutable
       - name: Configure Git
         run: |
-          git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
           git config --local user.email "${GITHUB_EMAIL}"
           git config --local user.name "${GITHUB_USER}"
         env:
-          GITHUB_USER: github-actions[bot]
-          GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: jaronline-ci[bot]
+          GITHUB_EMAIL: 228008421+jaronline-ci[bot]@users.noreply.github.com
       - name: Bump Versions and make release
         working-directory: packages/${{ inputs.package }}
         run: |
@@ -55,7 +60,7 @@ jobs:
             yarn bump
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.create-token.outputs.token }}
       - name: Publish to NPM
         working-directory: packages/${{ inputs.package }}
         run: |
