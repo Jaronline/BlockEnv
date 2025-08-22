@@ -131,6 +131,11 @@ const config: Config = {
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula,
 		},
+		algolia: {
+			appId: "8T72EBPMSX",
+			apiKey: "c00001cf92664dc960eb315f434eb3e8",
+			indexName: "BlockEnv Docs"
+		}
 	} satisfies Preset.ThemeConfig,
 	plugins: [
 		[
